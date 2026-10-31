@@ -1,0 +1,21 @@
+﻿{
+    "name": "LugeRush.Tests.EditMode",
+    "rootNamespace": "LugeRush.Tests",
+    "references": [
+        "LugeRush.Runtime",
+        "LugeRush.Editor",
+        "Unity.Splines",
+        "Unity.Mathematics",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [ "Editor" ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [ "nunit.framework.dll" ],
+    "autoReferenced": false,
+    "defineConstraints": [ "UNITY_INCLUDE_TESTS" ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

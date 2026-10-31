@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5311877ffa008354ab47a6049e4b403d, type: 3}
+  m_Name: Sled_Classic
+  m_EditorClassIdentifier: LugeRush.Runtime::LugeRush.Vehicle.SledStats
+  Type: 0
+  DisplayName: Orman
+  UiSpeed: 3
+  UiGrip: 3
+  UiHandling: 3
+  UiWeight: 3
+  UiDrift: 3
+  Mass: 135
+  MaxSpeed: 24.2
+  SpeedCapMultiplier: 1.3
+  SlopeGravityMultiplier: 2.5
+  RollingResistance: 0.015
+  DragCoefficient: 0.0030882477
+  GripLateral: 7.5
+  SteerRate: 100
+  SteerSpeedFalloff: 0.04
+  SteerResponse: 11
+  BrakeForce: 6.1
+  DriftMinSpeed: 9
+  DriftGripMultiplier: 0.35999998
+  DriftSteerMultiplier: 1.3
+  DriftBrakeScale: 0.25
+  DriftChargeRate: 0.45000002
+  BoostForce: 4.5
+  BoostDuration: 1.2
+  MiniBoostScale: 0.55
+  StartBoostForce: 6
+  StartBoostDuration: 1
+  SlipstreamMinDistance: 2
+  SlipstreamMaxDistance: 10
+  SlipstreamHalfWidth: 1.5
+  SlipstreamDragReduction: 0.45
+  SlipstreamChargeTime: 1.6
+  SlipstreamBoostForce: 3
+  SlipstreamBoostDuration: 0.8
+  CollisionKnockbackScale: 0.6
+  BarrierFriction: 0.9
+  SuspensionLength: 0.2
+  SuspensionStiffness: 60
+  SuspensionDamping: 7
+  AlignStrength: 30
+  AlignDamping: 6
+  AirGravityMultiplier: 1.8

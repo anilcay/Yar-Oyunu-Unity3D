@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "name": "LugeRush",
+    "maps": [
+        {
+            "name": "Sled",
+            "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d01",
+            "actions": [
+                { "name": "Steer", "type": "Value", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d10", "expectedControlType": "Axis", "processors": "", "interactions": "", "initialStateCheck": true },
+                { "name": "Brake", "type": "Value", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d11", "expectedControlType": "Axis", "processors": "", "interactions": "", "initialStateCheck": true },
+                { "name": "Drift", "type": "Button", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d12", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+                { "name": "Push", "type": "Button", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d13", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+                { "name": "Camera", "type": "Button", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d14", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+                { "name": "LookBack", "type": "Button", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d15", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+                { "name": "Reset", "type": "Button", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d16", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+                { "name": "Pause", "type": "Button", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4d17", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false }
+            ],
+            "bindings": [
+                { "name": "AD", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e01", "path": "1DAxis", "interactions": "", "processors": "", "groups": "", "action": "Steer", "isComposite": true, "isPartOfComposite": false },
+                { "name": "negative", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e02", "path": "<Keyboard>/a", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Steer", "isComposite": false, "isPartOfComposite": true },
+                { "name": "positive", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e03", "path": "<Keyboard>/d", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Steer", "isComposite": false, "isPartOfComposite": true },
+                { "name": "Arrows", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e04", "path": "1DAxis", "interactions": "", "processors": "", "groups": "", "action": "Steer", "isComposite": true, "isPartOfComposite": false },
+                { "name": "negative", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e05", "path": "<Keyboard>/leftArrow", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Steer", "isComposite": false, "isPartOfComposite": true },
+                { "name": "positive", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e06", "path": "<Keyboard>/rightArrow", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Steer", "isComposite": false, "isPartOfComposite": true },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e07", "path": "<Gamepad>/leftStick/x", "interactions": "", "processors": "", "groups": "Gamepad", "action": "Steer", "isComposite": false, "isPartOfComposite": false },
+
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e10", "path": "<Keyboard>/s", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Brake", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e11", "path": "<Keyboard>/downArrow", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Brake", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e12", "path": "<Keyboard>/space", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Brake", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e13", "path": "<Gamepad>/leftTrigger", "interactions": "", "processors": "", "groups": "Gamepad", "action": "Brake", "isComposite": false, "isPartOfComposite": false },
+
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e20", "path": "<Keyboard>/leftShift", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Drift", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e21", "path": "<Keyboard>/rightShift", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Drift", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e22", "path": "<Gamepad>/rightShoulder", "interactions": "", "processors": "", "groups": "Gamepad", "action": "Drift", "isComposite": false, "isPartOfComposite": false },
+
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e30", "path": "<Keyboard>/w", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Push", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e31", "path": "<Keyboard>/upArrow", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Push", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e32", "path": "<Gamepad>/buttonSouth", "interactions": "", "processors": "", "groups": "Gamepad", "action": "Push", "isComposite": false, "isPartOfComposite": false },
+
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e40", "path": "<Keyboard>/c", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Camera", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e41", "path": "<Gamepad>/buttonNorth", "interactions": "", "processors": "", "groups": "Gamepad", "action": "Camera", "isComposite": false, "isPartOfComposite": false },
+
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e50", "path": "<Keyboard>/q", "interactions": "", "processors": "", "groups": "Keyboard", "action": "LookBack", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e51", "path": "<Gamepad>/rightStickPress", "interactions": "", "processors": "", "groups": "Gamepad", "action": "LookBack", "isComposite": false, "isPartOfComposite": false },
+
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e60", "path": "<Keyboard>/r", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Reset", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e61", "path": "<Gamepad>/select", "interactions": "", "processors": "", "groups": "Gamepad", "action": "Reset", "isComposite": false, "isPartOfComposite": false },
+
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e70", "path": "<Keyboard>/escape", "interactions": "", "processors": "", "groups": "Keyboard", "action": "Pause", "isComposite": false, "isPartOfComposite": false },
+                { "name": "", "id": "7d1f6a0e-3b55-4b0e-9a61-0c1a2b3c4e71", "path": "<Gamepad>/start", "interactions": "", "processors": "", "groups": "Gamepad", "action": "Pause", "isComposite": false, "isPartOfComposite": false }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Keyboard",
+            "bindingGroup": "Keyboard",
+            "devices": [ { "devicePath": "<Keyboard>", "isOptional": false, "isOR": false } ]
+        },
+        {
+            "name": "Gamepad",
+            "bindingGroup": "Gamepad",
+            "devices": [ { "devicePath": "<Gamepad>", "isOptional": false, "isOR": false } ]
+        }
+    ]
+}

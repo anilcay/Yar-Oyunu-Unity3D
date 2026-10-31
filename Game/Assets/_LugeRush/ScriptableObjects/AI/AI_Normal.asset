@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3ac4e7459abd8c4bb7880fabcefa924, type: 3}
+  m_Name: AI_Normal
+  m_EditorClassIdentifier: LugeRush.Runtime::LugeRush.AI.AIDifficulty
+  DisplayName: Normal
+  LineAccuracy: 0.75
+  LineWander: 0.3
+  CornerSpeedFactor: 0.9
+  BrakeEfficiency: 0.75
+  DragFactor: 1
+  LookAheadMin: 5
+  LookAheadTime: 0.5
+  SteerGain: 2.2
+  DriftUsage: 0.25
+  PushReaction: 0.15
+  PushReactionSpread: 0.1
+  RubberBand: 0.12

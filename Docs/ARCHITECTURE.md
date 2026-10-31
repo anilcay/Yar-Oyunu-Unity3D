@@ -119,11 +119,21 @@ Rider iskeleti Humanoid uyumludur; `Hand.L`/`Hand.R` gidon tutma noktasına IK h
 - **1. şahıs kamera:** Konum `Head` kemiğinden (göz hizası ofsetiyle) alınır; rotasyon kızak yönünü izler, kafa rotasyonunun yalnız ~%25'i yumuşatılarak eklenir (mide bulantısını önlemek için). `Look_Back` sırasında ayrı geri-bakış kamerası kullanılır.
 - **Görünüm:** `RiderAppearance` bileşeni (LugeRush.Vehicle) gövde/kafa varyantını açar-kapar ve cilt/kask rengini malzeme `_BaseMap_ST.z = k/16` ofsetiyle seçer (bkz. `Art/ANIMATION.md`). Tüm varyantlar tek `SK_Rider.fbx` içinde, tek avatar.
 
+## Çekirdek fazından onaylanan sapmalar/eklemeler (Yönetici)
+- Kamera namespace'i **`LugeRush.CameraSystem`** (`LugeRush.Camera`, `UnityEngine.Camera`'yı gölgeler). Test asmdef'leri: `LugeRush.Tests.EditMode`, `LugeRush.Tests.PlayMode`.
+- Ek tipler: `TrackFollower` (kızak başına pist mesafesi), `SledRecovery` (reset), `RaceBootstrap` (RaceSession → sahne), `SledCatalog`, `IRaceAuthority` + `LocalRaceAuthority`, `TrackSceneBuilder.BuildScene(def, path)` (haritalar bununla üretilir), `PlaceAlong` (modül dizme).
+- `RaceParticipant.Lap` 1 tabanlı. Başlangıç çizgisi lift çıkışından 40 m sonra. Katmanlar: 8 Track, 9 Sled, 10 Barrier.
+- **Lift:** hız 18 m/s kalır (görsel inandırıcılık). GDD'deki ~6 sn hedefi lift **uzunluğu** ile sağlanır: gerçek haritalarda lift ≤ 110 m.
+- **HUD metni:** TextMeshPro kullanılır (TMP Essentials `Assets/TextMesh Pro` altına UI yazılımcısı tarafından kurulur); `DebugRaceHud` geçicidir.
+
 ## Sanat varlığı entegrasyon kararları (Yönetici)
 - Kızak ek boşlukları: `Grip2.L`/`Grip2.R` (yalnız Tandem, arka yolcu tutamağı), `Wheels_Mid` (Tandem orta destek tekerlekleri, dönmez). Kızak gövdesi `Body` alt nesnesi `LR_Palette_Tint` materyali kullanır; renk `_BaseColor` ile verilir.
 - Pist kenar modülleri (bordür/korkuluk/file) dış tarafı modelde **+X**. Sağ kenarda olduğu gibi, **sol kenarda Y ekseninde 180° döndürülerek** yerleştirilir (negatif ölçek KULLANILMAZ — normal/collider bozulur).
 - Lift kablosu `SM_Track_Lift_Cable_4m` modülü spline boyunca dizilerek yapılır (LineRenderer değil).
 - Geometrik yazılar (BAŞLANGIÇ, YAVAŞ, DUR…) şimdilik TR; EN varyantları yerelleştirme fazında.
+- Kızak boyutları kabul edildi: Classic 1.53 m, Sport 1.75 m, Mini 1.43 m, **Tandem 2.70 m** (sürücü bacak boyu nedeniyle; ağır/uzun kızak kimliğine uygun). Collider'lar bu boyutlara göre ayarlanır.
+- `SK_Rider.fbx` dokusu `Characters/LR_Palette.png` diye (var olmayan yol) referans veriyor → Unity'de import ayarında materyal paylaşılan `LR_Palette` materyaline yeniden eşlenir (entegrasyon görevi).
+- Açık iş (cilalama fazı): `SM_Track_SledStack` dekoru eski kayık formunda, yeni kızak gövdesine güncellenecek.
 - Blender 5.2 FBX bilinen hata: `bake_space_transform=True` ile 2+ seviye derin nesnelerin konumu bozulur → kök boşluk yazılmaz (`lr_common.export_fbx(drop_root=True)`), hiyerarşiler sığ tutulur.
 
 ## Ağ (Multiplayer)

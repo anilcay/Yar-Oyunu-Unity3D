@@ -1,0 +1,21 @@
+﻿{
+    "name": "LugeRush.Editor",
+    "rootNamespace": "LugeRush.Editor",
+    "references": [
+        "LugeRush.Runtime",
+        "Unity.InputSystem",
+        "Unity.Splines",
+        "Unity.Mathematics",
+        "Unity.Cinemachine",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [ "Editor" ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
