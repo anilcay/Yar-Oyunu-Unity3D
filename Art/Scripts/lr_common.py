@@ -803,8 +803,11 @@ def render_preview(objects, path, size=1024, bg="#BFD3DD", view=(1.0, -1.25, 0.7
 
 def cleanup(objs):
     for o in objs:
-        if o and o.name in bpy.data.objects:
-            bpy.data.objects.remove(o, do_unlink=True)
+        try:
+            if o and o.name in bpy.data.objects:
+                bpy.data.objects.remove(o, do_unlink=True)
+        except ReferenceError:  # already removed
+            pass
 
 
 def duplicate_hierarchy(root, offset=(0, 0, 0), suffix=".dup"):

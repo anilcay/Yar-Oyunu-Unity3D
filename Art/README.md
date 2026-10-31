@@ -16,7 +16,7 @@ python Art/Scripts/make_palette.py                 # paleti yeniden üret (satı
 | Kızak FBX | `Game/Assets/_LugeRush/Art/Models/Sleds/SM_Sled_{Classic,Sport,Tandem,Mini}.fbx` |
 | Pist FBX | `Game/Assets/_LugeRush/Art/Models/Track/SM_Track_*.fbx` |
 | Kaynak | `Art/Blender/Sleds_<Tip>.blend`, `Art/Blender/Track_Kit.blend` (modüller ızgara halinde) |
-| Önizleme | `Art/Renders/sled_<tip>.png` (4 renk), `sled_<tip>_hero.png` (yakın plan), `track_kit.png`, `track_finish.png`, `track_canopy.png`, `track_lift.png`, `track_props.png` |
+| Önizleme | `Art/Renders/sled_<tip>.png` (4 renk), `sled_<tip>_hero.png` (yakın plan), `sled_<tip>_with_rider(_back).png` (SK_Rider Sit_Idle ile oturma kontrolü), `sled_<tip>_fp.png` (1. şahıs), `track_kit.png`, `track_finish.png`, `track_canopy.png`, `track_lift.png`, `track_props.png` |
 
 Unity projesi yoksa (`Game/ProjectSettings/ProjectVersion.txt` yok) FBX'ler `Art/Export/<Kategori>/` altına yazılır. `.meta` dosyası üretilmez.
 
@@ -36,23 +36,27 @@ Unity projesi yoksa (`Game/ProjectSettings/ProjectVersion.txt` yok) FBX'ler `Art
 ```
 SM_Sled_<Tip>            (Unity'nin dosya adından oluşturduğu kök; pivot = zemin temas merkezi)
   Body                   tint gövde (LR_Palette_Tint)
-  Trim                   çıkartma şeritleri, vidalar, yan tampon rayı, tampon(lar), numara paneli, reflektörler
-  Chassis                koyu gri şasi rayları, akslar, çatallar, fren pabucu
+  Trim                   çıkartma şeritleri, vidalar, yan kauçuk şerit, ön/arka tampon, ayak basamakları, numara paneli, reflektörler
+  Chassis                gövde altında görünen koyu gri etek (skirt) + şasi rayları, akslar, çatallar, fren pabucu
   Wheels_Mid             (yalnız Tandem) orta destek tekerlekleri, dönmez
   Handlebar              pivot = kolon tabanı, dönme ekseni = yerel yukarı (Unity Y). Direksiyon = Y etrafında döndür.
-    Grip.L, Grip.R       el IK hedefleri (gidonla birlikte döner)
+    Grip.L, Grip.R       el IK hedefleri (gidonla birlikte döner); dönme ekseni üzerinde
   Wheel_FL/FR/RL/RR      pivot = aks merkezi, aks = Unity X ekseni (X etrafında döndür)
-  Seat                   pelvis oturma noktası
-  Camera_FP              1. şahıs göz hizası önerisi
+  Seat                   sürücü kalça eklemi (SK_Rider Hips orijini), yerden 0.25 m
+  Camera_FP              1. şahıs göz noktası (Sit_Idle'da Head + göz ofseti) = Seat + (0, 0.68 yukarı, 0.08 ileri)
   Seat2                  (Tandem) arka yolcu
-  Grip2.L, Grip2.R       (Tandem) arka yolcu tutamağı (sabit krom U-bar, Trim içinde)
+  Grip2.L, Grip2.R       (Tandem) arka yolcunun sabit gidonu (Trim içinde), Seat2'ye göre aynı ofsetler
 ```
-| Kızak | Boyut (U×G×Y, m; gidon/sırtlık dahil — yan duvar üstü ~0.31–0.34 m) | Tris |
+**Sürücü sözleşmesi (SK_Rider / ANIMATION.md ile uyumlu, Unity ekseni, Seat'e göre):** `Grip.L/R` = (∓0.20, +0.20, +0.55); gidon ekseni dikey, merkez (0, 0.20, 0.55), `Handlebar` pivotu bu eksenin altında konsol üstünde; ayak duvarı/basamakları Seat'in 0.88 m önünde (taban ~0.84). Tandem: `Seat2` = `Seat` + 1.16 m geride; yolcunun ayakları ön koltuk kabuğunun arkasına dayanır.
+
+Form: alçak gövde (yan duvar üstü 0.24–0.33 m), gövdeye kalıplanmış koltuk kabuğu (yükseltilmiş, yatık sırtlık + yan destekler), oturak + uyluk destekleri, bacaklar arasında orta konsol (gidon kolonu buradan çıkar), daralan U-burun + yatay tampon, yanlarda kauçuk şerit, altta görünen koyu etek ve tekerlekler.
+
+| Kızak | Boyut (U×G×Y, m; tampon ve sırtlık dahil) | Tris |
 |---|---|---|
-| SM_Sled_Classic (Orman) | 1.46 × 0.76 × 0.50 | 2248 |
-| SM_Sled_Sport (Ok) | 1.64 × 0.90 (kanatçıklar) × 0.46 | 2348 |
-| SM_Sled_Tandem (İkiz) | 2.14 × 0.76 × 0.55 (yolcu tutamağı) | 2964 |
-| SM_Sled_Mini (Fıstık) | 1.13 × 0.79 × 0.51 | 2628 |
+| SM_Sled_Classic (Orman) | 1.53 × 0.82 × 0.67 | 2106 |
+| SM_Sled_Sport (Ok) | 1.75 × 0.94 (yan podlar) × 0.61 | 2478 |
+| SM_Sled_Tandem (İkiz) | 2.70 × 0.82 × 0.67 | 2924 |
+| SM_Sled_Mini (Fıstık) | 1.43 × 0.92 × 0.67 | 2206 |
 
 ## Pist kiti — modül kuralları
 - Uç uca eklenen modüller: **pivot başlangıç ucunda (0,0,0), uzunluk Unity +Z boyunca**. x = 0 modülün orta çizgisi.
