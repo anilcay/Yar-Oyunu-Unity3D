@@ -1,0 +1,42 @@
+# --- Unity ---
+/Game/[Ll]ibrary/
+/Game/[Tt]emp/
+/Game/[Oo]bj/
+/Game/[Bb]uild/
+/Game/[Bb]uilds/
+/Game/[Ll]ogs/
+/Game/[Uu]ser[Ss]ettings/
+/Game/[Mm]emoryCaptures/
+/Game/[Rr]ecordings/
+/Game/.vs/
+/Game/.idea/
+/Game/.vscode/
+/Game/*.csproj
+/Game/*.sln
+/Game/*.slnx
+/Game/*.user
+/Game/*.pidb
+/Game/*.booproj
+/Game/*.svd
+/Game/*.pdb
+/Game/*.mdb
+/Game/*.opendb
+/Game/*.VC.db
+/Game/sysinfo.txt
+/Game/crashlytics-build.properties
+/Game/Assets/AssetStoreTools*
+*.apk
+*.aab
+*.unitypackage
+
+# --- Blender ---
+*.blend1
+*.blend2
+/Art/Renders/tmp/
+
+# --- Local only ---
+/Logs/
+/Reference/
+/Builds/
+.DS_Store
+Thumbs.db
