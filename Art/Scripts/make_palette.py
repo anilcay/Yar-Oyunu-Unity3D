@@ -67,6 +67,20 @@ ROWS = {
         ("sky_pink", "#E07A8F"), ("sky_purple", "#7A4FA0"), ("sky_blue", "#7FB8E6")],
     12: [("emit_warm", "#FFD27A"), ("emit_white", "#FFF6E0"), ("emit_red", "#FF4A3A"), ("emit_green", "#4AFF7A"),
          ("lamp_glass", "#FFE9B0"), ("window_glow", "#FFC864"), ("shadow_blue", "#2A3550"), ("ao_dark", "#1A1D22")],
+    # Row 13: environment extras (water foam, far-mountain cards, wild flowers, dry/young leaves)
+    13: [("foam_white", "#F4FAFC"), ("mist_blue", "#CDE6F0"), ("mtn_far_light", "#A9BACB"), ("mtn_far_base", "#8296AB"),
+         ("mtn_far_dark", "#5F7389"), ("mtn_forest_far", "#4F735E"), ("mtn_forest_haze", "#7FA08A"), ("mesa_far_light", "#D49A7E"),
+         ("mesa_far_base", "#A8687A"), ("mesa_far_dark", "#7A4E6E"), ("flower_pink", "#E87AA8"), ("flower_purple", "#9C6BCB"),
+         ("flower_blue", "#5F8FE0"), ("flower_white", "#F3F1E6"), ("leaf_dry", "#A08848"), ("leaf_young", "#C2C84E")],
+    # Row 14: Designer (track kit) - painted lift steel, hazard orange, bins, roofs, amber countdown lamp
+    14: ramp("steel_blue", "#3E6C8F", 3) + [("hazard_orange", "#F26A1B"), ("hazard_orange_dark", "#B84A0E")]
+        + ramp("bin_green", "#2F7D4F", 3) + [("roof_red", "#B8402F"), ("roof_red_dark", "#82291E"), ("glass_dark", "#2A3A44"),
+        ("emit_amber", "#FFB020"), ("concrete_dark", "#6E6C66"), ("galv_light", "#D5D8DA")],
+    # Row 15: Animator (characters) - skin shades (same column order as row 4 skin_1..6 so a UV offset selects the tone), face/hair, cloth shades
+    15: [(f"skin_{i}_shade", shade(c, 0.84, 1.05)) for i, c in enumerate(["#F6D3B3", "#E8B48C", "#C98E63", "#A0673F", "#7A4A2B", "#4E2E1C"], 1)]
+        + [("eye_dark", "#231E1C"), ("hair_brown", "#4A3122"), ("shirt_white_shade", "#D2D2CA"), ("shirt_navy_shade", "#1E2944"),
+           ("shirt_pink_shade", "#C46E90"), ("shirt_lime_shade", "#80A733"), ("hoodie_mustard", "#D9A532"),
+           ("hoodie_mustard_shade", "#A97C1E"), ("khaki", "#B49C6E"), ("khaki_shade", "#8A764E")],
 }
 
 

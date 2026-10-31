@@ -114,6 +114,11 @@ Klipler (FBX içindeki take adları): `Sit_Idle`, `Steer_Left`, `Steer_Right`, `
 Rider iskeleti Humanoid uyumludur; `Hand.L`/`Hand.R` gidon tutma noktasına IK hedefi olarak `Grip.L`/`Grip.R` boşlukları kızak modelinde bulunur.
 1. şahıs görünümde aynı rider modeli kullanılır; `Head` ve kask meshi kamera için gizlenir (yalnız gölge).
 
+**Kararlar (Yönetici):**
+- **İşaret kuralı:** `Steer` > 0 = **sağa** (D tuşu / sol çubuk sağ). Blend tree: -1 = `Steer_Left`, 0 = `Sit_Idle`, +1 = `Steer_Right`. Drift aynı kuralla.
+- **1. şahıs kamera:** Konum `Head` kemiğinden (göz hizası ofsetiyle) alınır; rotasyon kızak yönünü izler, kafa rotasyonunun yalnız ~%25'i yumuşatılarak eklenir (mide bulantısını önlemek için). `Look_Back` sırasında ayrı geri-bakış kamerası kullanılır.
+- **Görünüm:** `RiderAppearance` bileşeni (LugeRush.Vehicle) gövde/kafa varyantını açar-kapar ve cilt/kask rengini malzeme `_BaseMap_ST.z = k/16` ofsetiyle seçer (bkz. `Art/ANIMATION.md`). Tüm varyantlar tek `SK_Rider.fbx` içinde, tek avatar.
+
 ## Ağ (Multiplayer)
 - Netcode for GameObjects 2.x + Unity Multiplayer Services **Sessions** (Lobby + Relay). Oda kodu ile katılım.
 - **Host = sunucu + oyuncu.** Botlar ve `RaceManager` hostta çalışır.
