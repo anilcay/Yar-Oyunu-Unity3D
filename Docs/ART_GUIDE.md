@@ -21,6 +21,12 @@ Tekdüzeliği kırma kuralları (zorunlu):
 - **İsimlendirme:** `SM_<Kategori>_<Ad>_<Varyant>` (static mesh), `SK_` (skinned), örn. `SM_Sled_Classic`, `SM_Env_Forest_Bamboo_03`, `SK_Rider`.
 - **Kızak boşlukları (empty):** `Seat` (sürücü oturma), `Grip.L`, `Grip.R` (gidon tutma), `Camera_FP` (1. şahıs göz hizası önerisi), `Wheel_FL/FR/RL/RR` (dönen tekerlek objeleri ayrı mesh), `Handlebar` (ayrı mesh, direksiyonla döner), `Seat2` (yalnız Tandem).
 
+## Kararlar (Yönetici)
+- **Palet dondurulmuştur:** Mevcut hücrelerin rengi değiştirilmez, yalnızca yeni hücre/satır eklenir. Böylece her ekip başka satırlardaki hücreleri güvenle (salt-okunur) kullanabilir.
+- **Orta bitki bütçesi:** ≤500 tris (muz bitkisi, saguaro gibi orta boy bitkiler).
+- **Su:** Tek materyal kuralının tek istisnası. Unity'de ayrı yarı saydam su shader'ı (Shader Graph, dünya-uzayı akış gürültüsü, UV gerektirmez) seviye tasarımcısı tarafından yapılır; su meshleri `Water` alt-nesne adıyla ayrılır.
+- LOD ve rüzgar salınımı: PC hedefinde şimdilik gerekmiyor; performans testinde ihtiyaç görülürse eklenir.
+
 ## Blender iş akışı
 - Modeller **Python betikleriyle üretilir** (tekrarlanabilir): `Art/Scripts/*.py`, çalıştırma:
   `"C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.exe" -b -P Art/Scripts/<betik>.py`

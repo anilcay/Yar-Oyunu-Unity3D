@@ -1,0 +1,234 @@
+{
+ "SM_Env_Forest_TallTree_01": {
+  "tris": 558,
+  "size_m": [
+   9.67,
+   8.73,
+   21.2
+  ]
+ },
+ "SM_Env_Forest_TallTree_02": {
+  "tris": 414,
+  "size_m": [
+   11.6,
+   7.29,
+   23.54
+  ]
+ },
+ "SM_Env_Forest_TallTree_03": {
+  "tris": 540,
+  "size_m": [
+   6.0,
+   6.46,
+   16.44
+  ]
+ },
+ "SM_Env_Forest_TallTree_04": {
+  "tris": 498,
+  "size_m": [
+   7.06,
+   7.71,
+   23.79
+  ]
+ },
+ "SM_Env_Forest_TallTree_05": {
+  "tris": 500,
+  "size_m": [
+   5.34,
+   5.89,
+   16.61
+  ]
+ },
+ "SM_Env_Forest_GiantTree_01": {
+  "tris": 893,
+  "size_m": [
+   19.98,
+   19.33,
+   22.75
+  ]
+ },
+ "SM_Env_Forest_GiantTree_02": {
+  "tris": 1018,
+  "size_m": [
+   20.11,
+   21.0,
+   27.15
+  ]
+ },
+ "SM_Env_Forest_GiantTree_03": {
+  "tris": 770,
+  "size_m": [
+   18.86,
+   17.27,
+   19.88
+  ]
+ },
+ "SM_Env_Forest_Bamboo_01": {
+  "tris": 1198,
+  "size_m": [
+   5.72,
+   6.76,
+   10.11
+  ]
+ },
+ "SM_Env_Forest_BananaPlant_01": {
+  "tris": 252,
+  "size_m": [
+   3.71,
+   4.03,
+   3.94
+  ]
+ },
+ "SM_Env_Forest_Bamboo_02": {
+  "tris": 1367,
+  "size_m": [
+   7.65,
+   6.81,
+   12.01
+  ]
+ },
+ "SM_Env_Forest_BananaPlant_02": {
+  "tris": 476,
+  "size_m": [
+   4.23,
+   4.53,
+   3.6
+  ]
+ },
+ "SM_Env_Forest_Bamboo_03": {
+  "tris": 1173,
+  "size_m": [
+   5.95,
+   4.65,
+   7.95
+  ]
+ },
+ "SM_Env_Forest_BananaPlant_03": {
+  "tris": 308,
+  "size_m": [
+   2.67,
+   2.35,
+   1.75
+  ]
+ },
+ "SM_Env_Forest_Bamboo_04": {
+  "tris": 1367,
+  "size_m": [
+   8.26,
+   9.47,
+   11.17
+  ]
+ },
+ "SM_Env_Forest_BananaPlant_04": {
+  "tris": 224,
+  "size_m": [
+   3.0,
+   3.0,
+   1.57
+  ]
+ },
+ "SM_Env_Forest_Fern_01": {
+  "tris": 154,
+  "size_m": [
+   1.63,
+   1.73,
+   0.47
+  ]
+ },
+ "SM_Env_Forest_FlowerBush_01": {
+  "tris": 138,
+  "size_m": [
+   1.61,
+   1.89,
+   1.17
+  ]
+ },
+ "SM_Env_Forest_MossRock_01": {
+  "tris": 92,
+  "size_m": [
+   1.7,
+   1.27,
+   1.14
+  ]
+ },
+ "SM_Env_Forest_Fern_02": {
+  "tris": 126,
+  "size_m": [
+   2.24,
+   2.03,
+   0.69
+  ]
+ },
+ "SM_Env_Forest_FlowerBush_02": {
+  "tris": 158,
+  "size_m": [
+   1.74,
+   1.99,
+   1.6
+  ]
+ },
+ "SM_Env_Forest_MossRock_02": {
+  "tris": 106,
+  "size_m": [
+   3.62,
+   2.71,
+   2.06
+  ]
+ },
+ "SM_Env_Forest_Fern_03": {
+  "tris": 149,
+  "size_m": [
+   2.93,
+   2.64,
+   2.48
+  ]
+ },
+ "SM_Env_Forest_FlowerBush_03": {
+  "tris": 118,
+  "size_m": [
+   1.47,
+   1.58,
+   1.18
+  ]
+ },
+ "SM_Env_Forest_MossRock_03": {
+  "tris": 174,
+  "size_m": [
+   5.09,
+   4.21,
+   3.55
+  ]
+ },
+ "SM_Env_Forest_VineCurtain_01": {
+  "tris": 612,
+  "size_m": [
+   5.83,
+   0.89,
+   5.51
+  ]
+ },
+ "SM_Env_Forest_VineCurtain_02": {
+  "tris": 654,
+  "size_m": [
+   4.36,
+   0.84,
+   3.6
+  ]
+ },
+ "SM_Env_Forest_Footbridge_01": {
+  "tris": 936,
+  "size_m": [
+   16.02,
+   2.72,
+   6.32
+  ]
+ },
+ "SM_Env_Forest_ViewPlatform_01": {
+  "tris": 728,
+  "size_m": [
+   5.69,
+   7.3,
+   7.22
+  ]
+ }
+}

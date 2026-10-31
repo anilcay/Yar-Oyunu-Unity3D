@@ -1,0 +1,290 @@
+{
+ "SM_Env_Canyon_Mesa_01": {
+  "tris": 455,
+  "size_m": [
+   10.89,
+   11.58,
+   24.3
+  ]
+ },
+ "SM_Env_Canyon_Mesa_02": {
+  "tris": 538,
+  "size_m": [
+   30.82,
+   18.21,
+   18.3
+  ]
+ },
+ "SM_Env_Canyon_Mesa_03": {
+  "tris": 651,
+  "size_m": [
+   17.74,
+   10.18,
+   23.0
+  ]
+ },
+ "SM_Env_Canyon_Mesa_04": {
+  "tris": 525,
+  "size_m": [
+   21.6,
+   22.1,
+   13.3
+  ]
+ },
+ "SM_Env_Canyon_Mesa_05": {
+  "tris": 366,
+  "size_m": [
+   8.07,
+   5.25,
+   18.37
+  ]
+ },
+ "SM_Env_Canyon_Wall_01": {
+  "tris": 182,
+  "size_m": [
+   12.0,
+   6.44,
+   10.62
+  ]
+ },
+ "SM_Env_Canyon_Wall_02": {
+  "tris": 292,
+  "size_m": [
+   10.0,
+   7.1,
+   18.62
+  ]
+ },
+ "SM_Env_Canyon_Wall_03": {
+  "tris": 192,
+  "size_m": [
+   12.0,
+   6.73,
+   6.59
+  ]
+ },
+ "SM_Env_Canyon_Wall_04": {
+  "tris": 248,
+  "size_m": [
+   10.0,
+   7.09,
+   12.53
+  ]
+ },
+ "SM_Env_Canyon_Arch_01": {
+  "tris": 650,
+  "size_m": [
+   20.86,
+   7.4,
+   12.75
+  ]
+ },
+ "SM_Env_Canyon_Saguaro_01": {
+  "tris": 300,
+  "size_m": [
+   2.46,
+   1.13,
+   7.74
+  ]
+ },
+ "SM_Env_Canyon_DryBush_01": {
+  "tris": 180,
+  "size_m": [
+   1.3,
+   1.26,
+   0.98
+  ]
+ },
+ "SM_Env_Canyon_Saguaro_02": {
+  "tris": 214,
+  "size_m": [
+   0.83,
+   1.47,
+   5.68
+  ]
+ },
+ "SM_Env_Canyon_DryBush_02": {
+  "tris": 164,
+  "size_m": [
+   1.45,
+   1.44,
+   1.06
+  ]
+ },
+ "SM_Env_Canyon_Saguaro_03": {
+  "tris": 420,
+  "size_m": [
+   2.15,
+   2.14,
+   9.39
+  ]
+ },
+ "SM_Env_Canyon_Tumbleweed_01": {
+  "tris": 180,
+  "size_m": [
+   1.0,
+   1.02,
+   0.83
+  ]
+ },
+ "SM_Env_Canyon_PricklyPear_01": {
+  "tris": 190,
+  "size_m": [
+   0.92,
+   0.96,
+   2.0
+  ]
+ },
+ "SM_Env_Canyon_MineRail_01": {
+  "tris": 192,
+  "size_m": [
+   1.38,
+   6.0,
+   0.27
+  ]
+ },
+ "SM_Env_Canyon_GorgeWall_01": {
+  "tris": 274,
+  "size_m": [
+   12.0,
+   7.64,
+   22.48
+  ]
+ },
+ "SM_Env_Canyon_PricklyPear_02": {
+  "tris": 184,
+  "size_m": [
+   0.86,
+   1.11,
+   1.84
+  ]
+ },
+ "SM_Env_Canyon_MineRail_02": {
+  "tris": 208,
+  "size_m": [
+   1.93,
+   6.01,
+   0.85
+  ]
+ },
+ "SM_Env_Canyon_GorgeWall_02": {
+  "tris": 234,
+  "size_m": [
+   12.0,
+   11.24,
+   18.61
+  ]
+ },
+ "SM_Env_Canyon_MineCart_01": {
+  "tris": 340,
+  "size_m": [
+   1.17,
+   1.6,
+   1.27
+  ]
+ },
+ "SM_Env_Canyon_WaterTower_01": {
+  "tris": 634,
+  "size_m": [
+   5.13,
+   4.0,
+   10.17
+  ]
+ },
+ "SM_Env_Canyon_MesaCard_01": {
+  "tris": 128,
+  "size_m": [
+   460.0,
+   18.2,
+   78.0
+  ]
+ },
+ "SM_Env_Canyon_RockSmall_01": {
+  "tris": 26,
+  "size_m": [
+   0.77,
+   0.42,
+   0.14
+  ]
+ },
+ "SM_Env_Canyon_RockSmall_02": {
+  "tris": 24,
+  "size_m": [
+   0.88,
+   0.57,
+   0.26
+  ]
+ },
+ "SM_Env_Canyon_RockMedium_01": {
+  "tris": 50,
+  "size_m": [
+   1.98,
+   1.24,
+   0.5
+  ]
+ },
+ "SM_Env_Canyon_RockMedium_02": {
+  "tris": 52,
+  "size_m": [
+   1.82,
+   1.61,
+   0.87
+  ]
+ },
+ "SM_Env_Canyon_RockLarge_01": {
+  "tris": 60,
+  "size_m": [
+   4.85,
+   2.77,
+   1.1
+  ]
+ },
+ "SM_Env_Canyon_RockLarge_02": {
+  "tris": 84,
+  "size_m": [
+   6.23,
+   3.41,
+   1.89
+  ]
+ },
+ "SM_Env_Canyon_Slope_01": {
+  "tris": 156,
+  "size_m": [
+   6.01,
+   8.0,
+   2.78
+  ]
+ },
+ "SM_Env_Canyon_Slope_02": {
+  "tris": 176,
+  "size_m": [
+   5.5,
+   8.0,
+   4.29
+  ]
+ },
+ "SM_Env_Canyon_Slope_03": {
+  "tris": 184,
+  "size_m": [
+   5.41,
+   8.0,
+   1.97
+  ]
+ },
+ "SM_Env_Canyon_DryGrass_01": {
+  "tris": 132,
+  "size_m": [
+   0.95,
+   0.61,
+   0.46
+  ]
+ },
+ "SM_Env_Canyon_DryGrass_02": {
+  "tris": 84,
+  "size_m": [
+   1.26,
+   1.29,
+   0.74
+  ]
+ }
+}

@@ -1,0 +1,234 @@
+{
+ "SM_Env_Common_Slope_01": {
+  "tris": 166,
+  "size_m": [
+   6.0,
+   8.0,
+   2.78
+  ]
+ },
+ "SM_Env_Common_Slope_02": {
+  "tris": 166,
+  "size_m": [
+   5.61,
+   8.0,
+   4.29
+  ]
+ },
+ "SM_Env_Common_Slope_03": {
+  "tris": 188,
+  "size_m": [
+   5.32,
+   8.0,
+   1.97
+  ]
+ },
+ "SM_Env_Common_RockSmall_01": {
+  "tris": 28,
+  "size_m": [
+   0.57,
+   0.44,
+   0.44
+  ]
+ },
+ "SM_Env_Common_RockSmall_02": {
+  "tris": 26,
+  "size_m": [
+   0.7,
+   0.3,
+   0.18
+  ]
+ },
+ "SM_Env_Common_RockSmall_03": {
+  "tris": 28,
+  "size_m": [
+   0.63,
+   0.43,
+   0.55
+  ]
+ },
+ "SM_Env_Common_RockSmall_04": {
+  "tris": 24,
+  "size_m": [
+   0.63,
+   0.59,
+   0.28
+  ]
+ },
+ "SM_Env_Common_RockMedium_01": {
+  "tris": 60,
+  "size_m": [
+   2.02,
+   1.31,
+   0.99
+  ]
+ },
+ "SM_Env_Common_RockMedium_02": {
+  "tris": 46,
+  "size_m": [
+   2.2,
+   0.98,
+   0.48
+  ]
+ },
+ "SM_Env_Common_RockMedium_03": {
+  "tris": 60,
+  "size_m": [
+   1.64,
+   1.2,
+   1.69
+  ]
+ },
+ "SM_Env_Common_RockMedium_04": {
+  "tris": 46,
+  "size_m": [
+   2.18,
+   1.46,
+   0.85
+  ]
+ },
+ "SM_Env_Common_RockLarge_01": {
+  "tris": 80,
+  "size_m": [
+   3.64,
+   2.92,
+   2.72
+  ]
+ },
+ "SM_Env_Common_RockLarge_02": {
+  "tris": 56,
+  "size_m": [
+   3.86,
+   2.79,
+   1.03
+  ]
+ },
+ "SM_Env_Common_RockLarge_03": {
+  "tris": 98,
+  "size_m": [
+   3.46,
+   3.4,
+   3.65
+  ]
+ },
+ "SM_Env_Common_RockLarge_04": {
+  "tris": 90,
+  "size_m": [
+   5.49,
+   3.25,
+   2.04
+  ]
+ },
+ "SM_Env_Common_Grass_01": {
+  "tris": 132,
+  "size_m": [
+   0.95,
+   0.61,
+   0.46
+  ]
+ },
+ "SM_Env_Common_Grass_02": {
+  "tris": 84,
+  "size_m": [
+   1.26,
+   1.29,
+   0.74
+  ]
+ },
+ "SM_Env_Common_Grass_03": {
+  "tris": 144,
+  "size_m": [
+   0.77,
+   0.74,
+   0.66
+  ]
+ },
+ "SM_Env_Common_Grass_04": {
+  "tris": 60,
+  "size_m": [
+   0.72,
+   1.02,
+   0.53
+  ]
+ },
+ "SM_Env_Common_Gravel_01": {
+  "tris": 208,
+  "size_m": [
+   2.16,
+   2.48,
+   0.14
+  ]
+ },
+ "SM_Env_Common_Fence_01": {
+  "tris": 96,
+  "size_m": [
+   4.31,
+   0.27,
+   1.49
+  ]
+ },
+ "SM_Env_Common_Stump_01": {
+  "tris": 134,
+  "size_m": [
+   2.04,
+   2.04,
+   0.78
+  ]
+ },
+ "SM_Env_Common_Gravel_02": {
+  "tris": 194,
+  "size_m": [
+   2.7,
+   2.51,
+   0.54
+  ]
+ },
+ "SM_Env_Common_Fence_02": {
+  "tris": 96,
+  "size_m": [
+   4.53,
+   0.37,
+   1.53
+  ]
+ },
+ "SM_Env_Common_Stump_02": {
+  "tris": 134,
+  "size_m": [
+   1.82,
+   1.81,
+   1.23
+  ]
+ },
+ "SM_Env_Common_Log_01": {
+  "tris": 134,
+  "size_m": [
+   3.64,
+   0.72,
+   0.94
+  ]
+ },
+ "SM_Env_Common_MountainCard_01": {
+  "tris": 128,
+  "size_m": [
+   321.52,
+   19.5,
+   83.0
+  ]
+ },
+ "SM_Env_Common_MountainCard_02": {
+  "tris": 128,
+  "size_m": [
+   322.77,
+   12.58,
+   53.0
+  ]
+ },
+ "SM_Env_Common_MountainCard_03": {
+  "tris": 128,
+  "size_m": [
+   321.97,
+   27.06,
+   118.0
+  ]
+ }
+}
