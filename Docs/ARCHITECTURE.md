@@ -126,6 +126,21 @@ Rider iskeleti Humanoid uyumludur; `Hand.L`/`Hand.R` gidon tutma noktasına IK h
 - **Lift:** hız 18 m/s kalır (görsel inandırıcılık). GDD'deki ~6 sn hedefi lift **uzunluğu** ile sağlanır: gerçek haritalarda lift ≤ 110 m.
 - **HUD metni:** TextMeshPro kullanılır (TMP Essentials `Assets/TextMesh Pro` altına UI yazılımcısı tarafından kurulur); `DebugRaceHud` geçicidir.
 
+## Ağ fazı kararları (Yönetici)
+- **NetworkSled:** `Prefabs/Network/NetworkSled.prefab` yalnız NetworkObject + owner-auth NetworkTransform + `NetworkSled` taşır. Her peer ağsız oyun kızağını `SledCatalog.GetPrefab(tip)` ile ayrı obje olarak kurar; sanat prefab'larına NetworkObject eklenmez.
+- **Yetki:** `NetworkRaceAuthority` hostta; tek oyunculu mod da aynı yoldan (loopback yerel host) gider.
+- **Kopma:** İstemci düşerse kızağı host botu olur. Host düşerse istemciler mesajla menüye döner.
+- **İçerik:** `TrackCatalog` harita kimlikleri `forest`, `alpine`, `canyon`; sahneler `Track_Forest|Alpine|Canyon`. Sahne build'e girince harita menüde açılır.
+- **Hile koruması yok:** Host, sahibin bildirdiği RaceDistance'a güvenir (arkadaş oyunu için kabul).
+
+## Entegrasyon fazı kararları (Yönetici)
+- **Rig:** `SK_Rider` Humanoid. `Prefabs/Characters/Rider.prefab` ve `AC_Rider` kullanılır; `RiderAppearance.Set(body, head, skin, helmet)`.
+- **Kızak prefab'ı:** `SledCatalog.GetPrefab(type)`; kök Rigidbody + `SledController` + `SledVariant`, altında `SledVisual`. `Camera_FP` kökün ilk çocuğu kalır.
+- **Denge:** `SlipstreamChargeTime` 3 s, `SlipstreamCooldown` 11.5 s, Tandem `MaxSpeed` 34. Solo AI tur farkı hedefi ≤ %7.
+- **Yarış sonu çizgisi:** Tur çizgisi ve `FinishArch` **aynı yerdedir**; kemer çizginin tam üstüne, kanopi arkasına gelir. `StartGate` grid'in başında durur.
+- **Lift uzunluğu:** Hedef ≤ 110 m (~6 s). Pistin iniş yüksekliği bunu aşmayı gerektirirse en çok 150 m (~8 s) olabilir.
+- **Lift makarası:** Makara ve kablo hizası şerit merkezinden +0.75 m. Alt istasyon plakası şeritten çıkarılır; collider'lar bundan sonra eklenir.
+
 ## Sanat varlığı entegrasyon kararları (Yönetici)
 - Kızak ek boşlukları: `Grip2.L`/`Grip2.R` (yalnız Tandem, arka yolcu tutamağı), `Wheels_Mid` (Tandem orta destek tekerlekleri, dönmez). Kızak gövdesi `Body` alt nesnesi `LR_Palette_Tint` materyali kullanır; renk `_BaseColor` ile verilir.
 - Pist kenar modülleri (bordür/korkuluk/file) dış tarafı modelde **+X**. Sağ kenarda olduğu gibi, **sol kenarda Y ekseninde 180° döndürülerek** yerleştirilir (negatif ölçek KULLANILMAZ — normal/collider bozulur).

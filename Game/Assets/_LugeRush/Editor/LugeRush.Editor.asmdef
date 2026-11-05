@@ -1,4 +1,4 @@
-﻿{
+{
     "name": "LugeRush.Editor",
     "rootNamespace": "LugeRush.Editor",
     "references": [
@@ -7,9 +7,15 @@
         "Unity.Splines",
         "Unity.Mathematics",
         "Unity.Cinemachine",
-        "UnityEngine.UI"
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "Unity.Netcode.Runtime",
+        "Unity.Networking.Transport",
+        "Unity.Collections"
     ],
-    "includePlatforms": [ "Editor" ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

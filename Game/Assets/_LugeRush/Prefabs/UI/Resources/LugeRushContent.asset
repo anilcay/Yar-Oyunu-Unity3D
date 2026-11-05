@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55f62b79f7233f4787d4251f8bb3904, type: 3}
+  m_Name: LugeRushContent
+  m_EditorClassIdentifier: LugeRush.Runtime::LugeRush.UI.GameContent
+  BodyFont: {fileID: 11400000, guid: 92669a21456fa0341916ce5067d58272, type: 2}
+  DisplayFont: {fileID: 11400000, guid: 2a83f13e3e9d86c4aa9478175e8a40f7, type: 2}
+  Sleds: {fileID: 11400000, guid: 59e03e8573556444b8e7237b4d22b789, type: 2}
+  Tracks: {fileID: 11400000, guid: 2df2a1abfa2c07c48bb43de490400378, type: 2}
+  SledPrefab: {fileID: 7472398920317546053, guid: 4118ac0daca5fef4a91b6aed9b623c5c, type: 3}
+  InputActions: {fileID: -944628639613478452, guid: 5f159ead4e87add4883dcdb22281cb1a, type: 3}
+  Difficulties:
+  - {fileID: 11400000, guid: e4250b703ecf2784bb1a10f50a1a187c, type: 2}
+  - {fileID: 11400000, guid: 052f0f39f55cc3a49abaab970eebb10f, type: 2}
+  - {fileID: 11400000, guid: 99761d8d7cb21184c9d0681696bf1a47, type: 2}
+  AutopilotDifficulty: {fileID: 11400000, guid: 052f0f39f55cc3a49abaab970eebb10f, type: 2}
+  BootScene: Boot
+  MainMenuScene: MainMenu

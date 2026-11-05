@@ -37,6 +37,20 @@ namespace LugeRush.Race
             cfg.BotCount = Mathf.Clamp(cfg.BotCount, 0, RaceConfig.MaxSleds - 1);
             Manager.Config = cfg;
 
+            if (RaceSession.NetworkRoster)
+            {
+                // Network layer (NGO, single player included) spawns and registers the sleds itself.
+                Manager.DeferParticipantSetup = true;
+                foreach (var p in Roster)
+                {
+                    if (p == null) continue;
+                    p.gameObject.SetActive(false);
+                    Destroy(p.gameObject);
+                }
+                Roster.Clear();
+                return;
+            }
+
             var rng = new System.Random(Seed);
             int botIndex = 0;
             for (int i = 0; i < Roster.Count; i++)

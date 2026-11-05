@@ -37,8 +37,16 @@ namespace LugeRush.Race
         public float WrongWaySpeed = 2f;
         public float WrongWayDelay = 1f;
 
+        [Header("Network")]
+        [Tooltip("Participants are registered later via SetupParticipants (network spawned sleds).")]
+        public bool DeferParticipantSetup;
+        [Tooltip("Stay in Waiting until cleared (host waits for every peer before the countdown).")]
+        public bool HoldInWaiting;
+
         public RaceState State = RaceState.Waiting;
         public IRaceAuthority Authority { get; set; }
+        /// <summary>True once the participant list is known and placed on the grid.</summary>
+        public bool IsSetUp { get; private set; }
 
         public event Action<int> CountdownTick;
         public event Action RaceStarted;
@@ -85,9 +93,23 @@ namespace LugeRush.Race
         {
             Authority.Bind(this);
             Track.EnsureBuilt();
-            participants.Clear();
+            if (DeferParticipantSetup) return;
+            var found = new List<RaceParticipant>();
             foreach (var p in FindObjectsByType<RaceParticipant>(FindObjectsSortMode.None))
-                if (p.isActiveAndEnabled) participants.Add(p);
+                if (p.isActiveAndEnabled) found.Add(p);
+            SetupParticipants(found);
+        }
+
+        /// <summary>
+        /// Registers the racing sleds (sorted by GridSlot), places them on the grid and enters Waiting.
+        /// Called from Start for scene-placed sleds, or by the network layer once every sled is spawned.
+        /// </summary>
+        public void SetupParticipants(IEnumerable<RaceParticipant> list)
+        {
+            foreach (var kv in pushHandlers) if (kv.Key != null) kv.Key.PushPressed -= kv.Value;
+            pushHandlers.Clear();
+            participants.Clear();
+            foreach (var p in list) if (p != null) participants.Add(p);
             participants.Sort((a, b) => a.GridSlot.CompareTo(b.GridSlot));
 
             for (int i = 0; i < participants.Count; i++)
@@ -106,6 +128,7 @@ namespace LugeRush.Race
             standings.Clear();
             standings.AddRange(participants);
             UpdateStandings();
+            IsSetUp = true;
             ApplyState(RaceState.Waiting, 0f);
         }
 
@@ -130,6 +153,7 @@ namespace LugeRush.Race
 
         private void FixedUpdate()
         {
+            if (!IsSetUp) return;
             UpdateProgress();
             UpdateStandings();
             if (Authority == null || !Authority.HasAuthority) return;
@@ -138,7 +162,8 @@ namespace LugeRush.Race
             switch (State)
             {
                 case RaceState.Waiting:
-                    if (stateTime >= PreCountdownDelay) Authority.CommitState(RaceState.Countdown, 0f);
+                    if (HoldInWaiting) stateTime = 0f;
+                    else if (stateTime >= PreCountdownDelay) Authority.CommitState(RaceState.Countdown, 0f);
                     break;
                 case RaceState.Countdown:
                     int tick = CountdownFrom - Mathf.FloorToInt(stateTime);

@@ -34,6 +34,11 @@ namespace LugeRush.Race
         public static string PlayerName = "Oyuncu";
         /// <summary>Drive the local player with AI (automated tests, attract mode).</summary>
         public static bool PlayerAutopilot;
+        /// <summary>
+        /// True while the race scene is driven by the network layer (NGO host/client, single player included):
+        /// RaceBootstrap then removes the scene-placed sleds and the network layer spawns and registers participants.
+        /// </summary>
+        public static bool NetworkRoster;
 
         public static void Reset()
         {
@@ -42,6 +47,7 @@ namespace LugeRush.Race
             PlayerColor = SledColor.Orange;
             PlayerName = "Oyuncu";
             PlayerAutopilot = false;
+            NetworkRoster = false;
         }
     }
 }

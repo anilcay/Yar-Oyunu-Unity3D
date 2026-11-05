@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75ab6a423b70bba4fa0f10032bf303e8, type: 3}
+  m_Name: TrackCatalog
+  m_EditorClassIdentifier: LugeRush.Runtime::LugeRush.Race.TrackCatalog
+  Tracks:
+  - TrackId: forest
+    DisplayName: "Ye\u015Fil Vadi"
+    Description: "Tropik orman: bambu korular\u0131, \u0131slak asfalt, ah\u015Fap
+      k\xF6pr\xFC ve flamal\u0131 biti\u015F alan\u0131. \xD6\u011Fle g\xFCne\u015Fi,
+      hafif sis."
+    SceneName: Track_Forest
+    Definition: {fileID: 0}
+    ThemeColor: {r: 0.2, g: 0.7, b: 0.3, a: 1}
+    DeveloperOnly: 0
+  - TrackId: alpine
+    DisplayName: "\xC7am Zirvesi"
+    Description: "Alp da\u011F\u0131: \xE7am orman\u0131, \u015Felale ve dere, u\xE7urum
+      kenar\u0131nda panoramik viraj, kaya t\xFCneli."
+    SceneName: Track_Alpine
+    Definition: {fileID: 0}
+    ThemeColor: {r: 0.3, g: 0.55, b: 0.9, a: 1}
+    DeveloperOnly: 0
+  - TrackId: canyon
+    DisplayName: "K\u0131z\u0131l Kanyon"
+    Description: "\xC7\xF6l kanyonu: k\u0131z\u0131l kaya kuleleri, dar ge\xE7it,
+      do\u011Fal kaya kemeri. G\xFCn bat\u0131m\u0131."
+    SceneName: Track_Canyon
+    Definition: {fileID: 0}
+    ThemeColor: {r: 0.9, g: 0.4, b: 0.2, a: 1}
+    DeveloperOnly: 0
+  - TrackId: dev_greybox
+    DisplayName: "Geli\u015Ftirme Pisti"
+    Description: "Test pisti (\u22481.15 km): uzun d\xFCzl\xFCk, e\u011Fimli 180\xB0,
+      S-viraj, iki sa\xE7 tokas\u0131 ve \u2248150 m lift."
+    SceneName: Dev_Greybox
+    Definition: {fileID: 11400000, guid: 105ac7ac3fbd621429800933bf038bc7, type: 2}
+    ThemeColor: {r: 0.6, g: 0.6, b: 0.65, a: 1}
+    DeveloperOnly: 0
