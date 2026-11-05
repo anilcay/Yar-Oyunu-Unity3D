@@ -14,3 +14,13 @@ Okunması zorunlu: `Docs/GDD.md` (oyun tasarımı), `Docs/ARCHITECTURE.md` (kod/
 - Kod yorumları ve tanımlayıcılar İngilizce; oyun içi metinler TR (EN çevirisi sonra).
 - Araçlar: Unity `C:\Program Files\Unity\Hub\Editor\6000.3.19f1\Editor\Unity.exe`, Blender `C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.exe` (5.2).
 - Referans kareler (git dışı): `Reference/sheet_01..05.png` (videodan saniyede 1 kare, 5'li şeritler).
+
+## Token optimization
+These rules narrow how you work; they do not replace the rules above (the required docs and the report format still apply).
+
+1. Search before reading: use targeted search first and read whole files only when needed. Start with `Game/Assets/_LugeRush/Scripts/` and files directly related to the task. Do not scan generated folders (`Library/`, `Temp/`, `Logs/`, `Obj/`, `Build/`, `Builds/`) unless the task needs them; to verify a build, grep the specific log (e.g. for `error CS`) instead of reading it.
+2. In large searches, use the Explore subagent when needed and bring back only brief findings.
+3. After changes, show the relevant diffs and a short summary, not full files.
+4. Do not repeat decisions already made in the same session.
+5. When context fills up, suggest `/compact` or a new session, and preserve important decisions.
+6. Keep default responses short but technically sufficient.
