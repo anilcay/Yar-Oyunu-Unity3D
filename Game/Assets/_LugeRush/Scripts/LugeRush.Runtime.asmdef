@@ -2,6 +2,8 @@
     "name": "LugeRush.Runtime",
     "rootNamespace": "LugeRush",
     "references": [
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Core.Runtime",
         "Unity.InputSystem",
         "Unity.Splines",
         "Unity.Mathematics",

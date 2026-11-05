@@ -2,6 +2,8 @@
     "name": "LugeRush.Editor",
     "rootNamespace": "LugeRush.Editor",
     "references": [
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Core.Runtime",
         "LugeRush.Runtime",
         "Unity.InputSystem",
         "Unity.Splines",

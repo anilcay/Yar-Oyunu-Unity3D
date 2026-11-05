@@ -1,0 +1,468 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b93d63bb0e21dd0409dc7042bd569967, type: 3}
+  m_Name: Track_Canyon
+  m_EditorClassIdentifier: LugeRush.Runtime::LugeRush.Track.TrackDefinition
+  TrackId: canyon
+  DisplayName: "K\u0131z\u0131l Kanyon"
+  Knots:
+  - Position: {x: 0, y: 82.32425, z: 0}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 0, y: 81.65725, z: 11.5}
+    BankDeg: 0
+    Width: 4.2
+  - Position: {x: 0, y: 80.99025, z: 23}
+    BankDeg: 0
+    Width: 4.2
+  - Position: {x: 0, y: 80.32325, z: 34.5}
+    BankDeg: 0
+    Width: 4.2
+  - Position: {x: 0, y: 79.65625, z: 46}
+    BankDeg: 0
+    Width: 4.2
+  - Position: {x: 0, y: 78.98925, z: 57.5}
+    BankDeg: 0
+    Width: 4.2
+  - Position: {x: 0, y: 78.32225, z: 69}
+    BankDeg: 0
+    Width: 4.2
+  - Position: {x: 0, y: 77.65525, z: 80.5}
+    BankDeg: 0
+    Width: 4.2
+  - Position: {x: 0, y: 76.98825, z: 92}
+    BankDeg: 0
+    Width: 4.2
+  - Position: {x: 0, y: 75.93825, z: 107}
+    BankDeg: 0
+    Width: 4.6
+  - Position: {x: 0, y: 75.09825, z: 119}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 74.25825, z: 131}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 73.41825, z: 143}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 72.57825, z: 155}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 71.73825, z: 167}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 70.89825, z: 179}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 70.05825, z: 191}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 69.21825, z: 203}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 68.37825, z: 215}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 67.538246, z: 227}
+    BankDeg: 0
+    Width: 3.6
+  - Position: {x: 0, y: 66.72158, z: 238.66667}
+    BankDeg: 0
+    Width: 4.6
+  - Position: {x: 0, y: 65.904915, z: 250.33334}
+    BankDeg: 0
+    Width: 4.6
+  - Position: {x: 0, y: 65.08825, z: 262}
+    BankDeg: 0
+    Width: 4.6
+  - Position: {x: 0.4995842, y: 64.833405, z: 267.07236}
+    BankDeg: 2.5
+    Width: 0
+  - Position: {x: 1.9791317, y: 64.57856, z: 271.94977}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 4.3817883, y: 64.323715, z: 276.44482}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 7.615225, y: 64.06887, z: 280.38477}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 11.555175, y: 63.814026, z: 283.61823}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 16.050228, y: 63.55918, z: 286.02087}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 20.927652, y: 63.304337, z: 287.50043}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 26.000002, y: 63.04949, z: 288}
+    BankDeg: 2.5
+    Width: 0
+  - Position: {x: 38.5, y: 62.36199, z: 288}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 51, y: 61.67449, z: 288}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 63.5, y: 60.98699, z: 288}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 76, y: 60.29949, z: 288}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 82.24289, y: 59.95447, z: 287.38513}
+    BankDeg: 3
+    Width: 0
+  - Position: {x: 88.24587, y: 59.60945, z: 285.56415}
+    BankDeg: 6
+    Width: 0
+  - Position: {x: 93.77825, y: 59.26443, z: 282.60703}
+    BankDeg: 6
+    Width: 0
+  - Position: {x: 98.62741, y: 58.91941, z: 278.6274}
+    BankDeg: 3
+    Width: 0
+  - Position: {x: 103.47657, y: 58.57439, z: 274.6478}
+    BankDeg: -3
+    Width: 0
+  - Position: {x: 109.00895, y: 58.22937, z: 271.69067}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 115.01193, y: 57.88435, z: 269.8697}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 121.25482, y: 57.53933, z: 269.25482}
+    BankDeg: -3
+    Width: 0
+  - Position: {x: 131.25482, y: 56.98933, z: 269.25482}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 141.25482, y: 56.43933, z: 269.25482}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 152.57005, y: 55.81398, z: 268.14038}
+    BankDeg: 5.5
+    Width: 0
+  - Position: {x: 163.45045, y: 55.188633, z: 264.83984}
+    BankDeg: 11
+    Width: 0
+  - Position: {x: 173.4779, y: 54.563282, z: 259.48004}
+    BankDeg: 11
+    Width: 0
+  - Position: {x: 182.26701, y: 53.937935, z: 252.26701}
+    BankDeg: 11
+    Width: 0
+  - Position: {x: 189.48006, y: 53.312584, z: 243.4779}
+    BankDeg: 11
+    Width: 0
+  - Position: {x: 194.83983, y: 52.687233, z: 233.45047}
+    BankDeg: 11
+    Width: 0
+  - Position: {x: 198.14037, y: 52.061886, z: 222.57007}
+    BankDeg: 11
+    Width: 0
+  - Position: {x: 199.25482, y: 51.43654, z: 211.25482}
+    BankDeg: 5.5
+    Width: 0
+  - Position: {x: 199.25482, y: 50.344536, z: 195.65482}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 49.252537, z: 180.05481}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 48.160538, z: 164.4548}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 47.06854, z: 148.8548}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 45.97654, z: 133.25479}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 44.89854, z: 117.85479}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 43.82054, z: 102.45479}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 42.742542, z: 87.05479}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 41.664543, z: 71.654785}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 199.25482, y: 40.586544, z: 56.254784}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 198.77779, y: 40.42208, z: 52.631317}
+    BankDeg: 3
+    Width: 4.8
+  - Position: {x: 197.37918, y: 40.257618, z: 49.254784}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 195.15431, y: 40.093155, z: 46.35529}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 192.25482, y: 39.92869, z: 44.13043}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 188.8783, y: 39.76423, z: 42.731823}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 185.25482, y: 39.599766, z: 42.254784}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 181.63135, y: 39.435303, z: 42.731823}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 178.25482, y: 39.27084, z: 44.13043}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 175.35533, y: 39.106377, z: 46.35529}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 173.13046, y: 38.941914, z: 49.254784}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 171.73186, y: 38.77745, z: 52.631317}
+    BankDeg: 6
+    Width: 4.8
+  - Position: {x: 171.25482, y: 38.612988, z: 56.25478}
+    BankDeg: 3
+    Width: 4.8
+  - Position: {x: 171.25482, y: 38.112988, z: 66.254776}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 171.25482, y: 37.662987, z: 75.254776}
+    BankDeg: 0
+    Width: 3.8
+  - Position: {x: 171.25482, y: 37.212986, z: 84.254776}
+    BankDeg: 0
+    Width: 3.8
+  - Position: {x: 171.25482, y: 36.762985, z: 93.254776}
+    BankDeg: 0
+    Width: 3.8
+  - Position: {x: 171.25482, y: 36.312984, z: 102.254776}
+    BankDeg: 0
+    Width: 3.8
+  - Position: {x: 171.25482, y: 35.862984, z: 111.254776}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 170.71681, y: 35.588535, z: 116.7173}
+    BankDeg: -3
+    Width: 0
+  - Position: {x: 169.12344, y: 35.314087, z: 121.9699}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 166.53598, y: 35.03964, z: 126.81073}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 163.05382, y: 34.76519, z: 131.05376}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 158.81079, y: 34.49074, z: 134.53592}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 153.96996, y: 34.216293, z: 137.1234}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 148.71735, y: 33.941845, z: 138.71675}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 143.25482, y: 33.667397, z: 139.25476}
+    BankDeg: -3
+    Width: 0
+  - Position: {x: 132.60483, y: 33.081646, z: 139.25476}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 121.95483, y: 32.495895, z: 139.25476}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 116.492294, y: 32.221447, z: 138.71675}
+    BankDeg: -3
+    Width: 0
+  - Position: {x: 111.239685, y: 31.946999, z: 137.12338}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 106.39885, y: 31.67255, z: 134.5359}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 102.15582, y: 31.398102, z: 131.05374}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 98.67367, y: 31.123653, z: 126.81072}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 96.0862, y: 30.849205, z: 121.9699}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 94.49283, y: 30.574757, z: 116.71729}
+    BankDeg: -6
+    Width: 0
+  - Position: {x: 93.95482, y: 30.300308, z: 111.25476}
+    BankDeg: -3
+    Width: 0
+  - Position: {x: 93.95482, y: 29.514595, z: 96.96905}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 28.728882, z: 82.683334}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 27.943169, z: 68.39762}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 27.157455, z: 54.111908}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 26.371742, z: 39.826195}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 25.58603, z: 25.540482}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 24.800316, z: 11.254767}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 23.95263, z: -4.157733}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 23.104942, z: -19.570232}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 22.257256, z: -34.982735}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 21.409569, z: -50.395233}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 20.561882, z: -65.80773}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 19.714195, z: -81.22023}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 18.866508, z: -96.63273}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.95482, y: 18.018822, z: -112.04523}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 93.41681, y: 17.744377, z: -117.50776}
+    BankDeg: 2.5
+    Width: 0
+  - Position: {x: 91.82344, y: 17.469933, z: -122.76037}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 89.23597, y: 17.195488, z: -127.60119}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 85.753815, y: 16.921043, z: -131.84421}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 81.51079, y: 16.646599, z: -135.32637}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 76.66995, y: 16.372154, z: -137.91385}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 71.41734, y: 16.09771, z: -139.50722}
+    BankDeg: 5
+    Width: 0
+  - Position: {x: 65.95481, y: 15.823265, z: -140.04523}
+    BankDeg: 2.5
+    Width: 0
+  - Position: {x: 52.62148, y: 15.156601, z: -140.04523}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 39.288147, y: 14.489937, z: -140.04523}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 25.954815, y: 13.823273, z: -140.04523}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: 20.882477, y: 13.670364, z: -139.54564}
+    BankDeg: 1.5
+    Width: 0
+  - Position: {x: 16.005053, y: 13.517456, z: -138.0661}
+    BankDeg: 3
+    Width: 0
+  - Position: {x: 11.509994, y: 13.364548, z: -135.66344}
+    BankDeg: 3
+    Width: 0
+  - Position: {x: 7.5700436, y: 13.211639, z: -132.43001}
+    BankDeg: 3
+    Width: 0
+  - Position: {x: 4.336607, y: 13.058731, z: -128.49005}
+    BankDeg: 3
+    Width: 0
+  - Position: {x: 1.9339485, y: 12.905823, z: -123.994995}
+    BankDeg: 3
+    Width: 0
+  - Position: {x: 0.45440292, y: 12.752914, z: -119.117584}
+    BankDeg: 3
+    Width: 0
+  - Position: {x: -0.045181274, y: 12.600006, z: -114.04523}
+    BankDeg: 1.5
+    Width: 0
+  - Position: {x: -0.045179527, y: 12.300003, z: -104.04523}
+    BankDeg: 0
+    Width: 0
+  - Position: {x: -0.04517778, y: 12, z: -94.04523}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.04133471, y: 12, z: -86.04523}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.03758555, y: 13.875314, z: -78.24071}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.033836383, y: 19.501253, z: -70.43618}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.030087218, y: 28.408993, z: -62.63166}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.026338054, y: 37.785557, z: -54.827137}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.02258889, y: 47.162125, z: -47.022614}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.018839726, y: 56.538696, z: -39.21809}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.015090561, y: 65.91526, z: -31.413567}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.011341397, y: 74.823, z: -23.609047}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.0075922348, y: 80.44894, z: -15.804527}
+    BankDeg: 0
+    Width: 4
+  - Position: {x: -0.0038430681, y: 82.32425, z: -7.9999995}
+    BankDeg: 0
+    Width: 4
+  DefaultWidth: 4.6
+  HandleScale: 0.35
+  LiftStartKnot: 134
+  LiftEndKnot: 0
+  LiftSpeed: 18
+  LiftExitSpeed: 9
+  StartLineOffset: 54
+  CheckpointSpacing: 50
+  CurbWidth: 0.35
+  CurbHeight: 0.12
+  BarrierHeight: 1.2
+  BuildSkirt: 0
+  SkirtGroundY: 0

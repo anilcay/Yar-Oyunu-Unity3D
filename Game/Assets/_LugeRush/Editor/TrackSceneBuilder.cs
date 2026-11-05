@@ -50,6 +50,8 @@ namespace LugeRush.Editor
             public System.Func<float, int, bool> EdgeFilter;
             [Tooltip("Distance -> may a warning sign stand here? Null = everywhere.")]
             public System.Func<float, bool> SignFilter;
+            [Tooltip("Called as soon as the spline exists, before any kit placement (the Func filters may rely on it).")]
+            public System.Action<TrackPath> TrackReady;
             [Tooltip("Called after the track is built, before the sleds, cameras and the scene save.")]
             public System.Action<TrackPath, TrackMeshBuilder, Transform> PostTrack;
             [Tooltip("Called after the whole scene exists, right before it is saved.")]
@@ -68,7 +70,7 @@ namespace LugeRush.Editor
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             if (!options.CustomEnvironment) BuildEnvironment(options);
 
-            var track = BuildTrack(def, scene.name, guardrail, options);
+            var track = BuildTrack(def, System.IO.Path.GetFileNameWithoutExtension(scenePath), guardrail, options);
             var path = track.GetComponent<TrackPath>();
             var grid = track.GetComponentInChildren<StartGrid>();
             options.PostTrack?.Invoke(path, track.GetComponent<TrackMeshBuilder>(), track.transform);
@@ -176,6 +178,7 @@ namespace LugeRush.Editor
             go.AddComponent<SplineContainer>();
             var path = go.AddComponent<TrackPath>();
             path.BuildFromDefinition(def);
+            options.TrackReady?.Invoke(path);
 
             var builder = go.AddComponent<TrackMeshBuilder>();
             builder.Track = path;
