@@ -9,6 +9,10 @@ Conventions (see Art/README.md)
   The "outside" of edge modules (post brackets, net braces) is Blender -X = Unity +X.
 - Signs / gates / arch face the oncoming riders: their front is Blender +Y (= Unity -Z).
 - Lamp meshes of the start gate use material "LR_Palette_Emissive" (same atlas as emission map).
+- Lift: the haul cable runs CABLE_X beside the lane centre (Unity +0.75 m, right of travel).  The sled
+  corridor (|x| < LANE_CLEAR, z < LANE_CLEAR_Z) stays free of all station geometry.
+
+--only A,B limits FBX export to those modules (FBX files embed a timestamp, so unchanged ones stay put).
 """
 import math
 import os
@@ -23,6 +27,13 @@ import lr_common as lr  # noqa: E402
 
 FONT = r"C:\Windows\Fonts\ariblk.ttf"
 MODULES = {}  # name -> builder
+
+# Lift contract: TrackSceneBuilder.CableLateral = +0.75 (Unity +X = Blender -X)
+CABLE_X = -0.75       # bull wheel plane / cable line
+CABLE_Z = 0.255       # SM_Track_Lift_Cable_4m centre height
+CABLE_END_Y = -3.0    # both stations: the cable modules stop 3 m into the 6 m station
+LANE_CLEAR = 0.60     # sled corridor half width (widest sled 0.47 m)
+LANE_CLEAR_Z = 1.10   # sled corridor height
 
 
 def module(fn):
@@ -112,43 +123,29 @@ def SM_Track_Net_4m():
     """Catch-net barrier: 2 posts + diamond net (double-sided strands) + top rope."""
     mb = lr.MeshBuilder(seed=24)
     h0, h1 = 0.25, 1.75
-    for y in (0.0, -2.0):
+    for y in (-0.04, -2.04):  # post face flush with the module start -> bounds exactly 4 m, 2 m pitch
         mb.box((0, y, 0.95), (0.08, 0.08, 1.9), {"top": "rail_metal_light", "side": "net_black"})
         mb.box((-0.35, y, 0.6), (0.05, 0.05, 1.4), "rail_metal_dark", rot=Euler((0, math.radians(-28), 0)))
     mb.cylinder((0, 0.0, h1), (0, -4.0, h1), 0.02, "rope", segments=4, caps=False)
     mb.cylinder((0, 0.0, h0), (0, -4.0, h0), 0.016, "net_black", segments=4, caps=False)
     sp = 0.5
     w = 0.02
+    y_hi, y_lo = -w, -4.0 + w      # strands stay inside the module even with their width
     k = -int(1.5 / sp) - 1
-    while k * sp < 4.0:
+    while k * sp < 4.0 + 1.5:
         for sgn in (1, -1):
-            # strand from bottom edge (y = -k*sp) diagonally up
-            y0 = -k * sp
-            pa, pb = Vector((0, y0, h0)), Vector((0, y0 - sgn * (h1 - h0), h1))
-            # clip to [0, -4]
-            def clip(p, q):
-                t0, t1 = 0.0, 1.0
-                for lim in (0.0, -4.0):
-                    if (q.y - p.y) == 0:
-                        continue
-                    t = (lim - p.y) / (q.y - p.y)
-                    if lim == 0.0:
-                        if p.y > 0:
-                            t0 = max(t0, t)
-                        elif q.y > 0:
-                            t1 = min(t1, t)
-                    else:
-                        if p.y < -4.0:
-                            t0 = max(t0, t)
-                        elif q.y < -4.0:
-                            t1 = min(t1, t)
-                return (p.lerp(q, t0), p.lerp(q, t1)) if t1 > t0 + 1e-3 else None
-            seg = clip(pa, pb)
-            if seg:
-                a, b = seg
-                d = (b - a).normalized()
-                side = Vector((0, -d.z, d.y)) * w
-                mb.surface([[a - side, b - side], [a + side, b + side]], "net_green", double_sided=True)
+            # strand from the bottom edge (y = -k*sp) diagonally up, clipped to the module length
+            a = Vector((0, -k * sp, h0))
+            b = Vector((0, -k * sp - sgn * (h1 - h0), h1))
+            dy = b.y - a.y
+            t_hi, t_lo = (y_hi - a.y) / dy, (y_lo - a.y) / dy
+            t0, t1 = max(0.0, min(t_hi, t_lo)), min(1.0, max(t_hi, t_lo))
+            if t1 - t0 < 1e-3:
+                continue
+            a, b = a.lerp(b, t0), a.lerp(b, t1)
+            d = (b - a).normalized()
+            side = Vector((0, -d.z, d.y)) * w
+            mb.surface([[a - side, b - side], [a + side, b + side]], "net_green", double_sided=True)
         k += 1
     return mb.to_object("SM_Track_Net_4m")
 
@@ -550,21 +547,37 @@ def lift_housing(mb, L, W, H, roof_cell="roof_red"):
     mb.box((-W / 2 - 0.3, -L / 2, H + 0.08), (0.05, L + 0.8, 0.16), "roof_red_dark")
 
 
-def wheel_assembly(mb, y, r=0.9, z=0.35):
-    """Horizontal-axis bull wheel half sunk in a pit + its guard."""
-    c = Vector((0, y, z))
-    mb.cylinder(c - Vector((0.07, 0, 0)), c + Vector((0.07, 0, 0)), r, "rail_metal_base", segments=16,
-                cap_cell="steel_blue_dark")
-    mb.cylinder(c - Vector((0.12, 0, 0)), c + Vector((0.12, 0, 0)), r * 0.2, "hazard_orange", segments=8)
-    for sx in (-1, 1):
-        mb.box((sx * 0.35, y, z / 2 + 0.1), (0.12, 0.5, z + 0.2), "steel_blue_base", bevel=0.01)
-        mb.cylinder((sx * 0.12, y, z), (sx * 0.35, y, z), 0.05, "chrome_dark", segments=6)
-    # guard rails around the wheel (yellow)
-    mb.sweep([(-1.1, y + 1.1, 0.0), (-1.1, y + 1.1, 1.0), (-1.1, y - 1.1, 1.0), (-1.1, y - 1.1, 0.0)], 0.03,
-             "sign_yellow", sides=6)
-    mb.sweep([(1.1, y + 1.1, 0.0), (1.1, y + 1.1, 1.0), (1.1, y - 1.1, 1.0), (1.1, y - 1.1, 0.0)], 0.03,
-             "sign_yellow", sides=6)
-    mb.box((0, y, 0.03), (2.6, 2.6, 0.06), "concrete")
+def wheel_assembly(mb, y, r=0.6):
+    """Bull wheel beside the sled corridor, in the cable plane (x = CABLE_X, axle across the lane).
+    The haul strand leaves its underside at CABLE_Z.  Everything sits on the outer side of the wheel:
+    axle cantilevered from one pedestal, plate and guards start outside the corridor."""
+    x, s = CABLE_X, -1  # s = outward direction (Blender -X)
+    z = CABLE_Z + r
+    c = Vector((x, y, z))
+    ax = Vector((1, 0, 0))
+    mb.cylinder(c - ax * 0.05, c + ax * 0.05, r, "rail_metal_base", segments=16, cap_cell="steel_blue_dark")
+    for off in (-0.06, 0.06):  # groove flanges
+        mb.cylinder(c + ax * (off - 0.012), c + ax * (off + 0.012), r + 0.03, "rail_metal_light", segments=16,
+                    cap_cell="steel_blue_base")
+    mb.cylinder(c + ax * s * -0.08, c + ax * s * 0.4, 0.05, "chrome_dark", segments=6)     # axle
+    mb.cylinder(c + ax * s * -0.085, c + ax * s * 0.1, r * 0.2, "hazard_orange", segments=8)  # hub
+    px = x + s * 0.36
+    mb.box((px, y, z / 2), (0.14, 0.5, z), {"top": "steel_blue_light", "side": "steel_blue_base"}, bevel=0.01,
+           taper=(0.8, 0.45))
+    for gx in (x - s * 0.11, x + s * 0.5):  # yellow guards parallel to the lane
+        mb.sweep([(gx, y + 0.8, 0.0), (gx, y + 0.8, 1.0), (gx, y - 0.8, 1.0), (gx, y - 0.8, 0.0)], 0.03,
+                 "sign_yellow", sides=6)
+    x0, x1 = -LANE_CLEAR - 0.02, x + s * 0.65
+    mb.box(((x0 + x1) / 2, y, 0.03), (abs(x1 - x0), 2.0, 0.06), "concrete")
+
+
+def cable_ends(mb, y_wheel, r=0.6):
+    """Haul strand from the cable modules' end to the wheel + return strand into a ground sheave."""
+    x = CABLE_X
+    mb.cylinder((x, CABLE_END_Y, CABLE_Z), (x, y_wheel, CABLE_Z), 0.012, "rubber_worn", segments=4, caps=False)
+    gx = x - 0.13
+    mb.cylinder((x, y_wheel, CABLE_Z + 2 * r), (gx, CABLE_END_Y, 0.09), 0.012, "rubber_worn", segments=4, caps=False)
+    mb.box((gx, CABLE_END_Y, 0.06), (0.14, 0.3, 0.12), {"top": "hazard_orange", "side": "steel_blue_dark"}, bevel=0.01)
 
 
 @module
@@ -572,6 +585,7 @@ def SM_Track_Lift_StationBottom():
     """Bottom (return / tension) station: bull wheel, counterweight tower, open roof (6 m)."""
     mb = lr.MeshBuilder(seed=61)
     wheel_assembly(mb, -1.2)
+    cable_ends(mb, -1.2)
     lift_housing(mb, 6.0, 4.4, 3.2)
     # counterweight tower outside the lane
     x = -3.2
@@ -582,14 +596,14 @@ def SM_Track_Lift_StationBottom():
         mb.box((x, -3.0, z), (0.8, 0.8, 0.08), "steel_blue_dark")
     mb.box((x, -3.0, 1.6), (0.6, 0.6, 1.0), {"top": "concrete", "side": "concrete_dark"}, bevel=0.03)
     mb.box((x, -3.0, 4.55), (0.6, 0.6, 0.2), "hazard_orange", bevel=0.02)
-    mb.cylinder((x + 0.3, -3.0, 4.5), (-0.1, -1.2, 0.6), 0.015, "rubber", segments=4)
+    mb.cylinder((x + 0.3, -3.0, 4.5), (CABLE_X - 0.5, -1.2, CABLE_Z + 0.6), 0.015, "rubber", segments=4)
     # control box + warning stripes
     mb.box((2.6, -0.8, 0.8), (0.5, 0.4, 0.8), {"top": "galv_light", "side": "steel_blue_light"}, bevel=0.02)
     mb.box((2.6, -0.59, 0.95), (0.3, 0.02, 0.2), "glass_dark")
     mb.box((2.6, -0.585, 0.7), (0.06, 0.02, 0.06), "emit_green")
     mb.box((2.6, -0.8, 0.2), (0.1, 0.1, 0.4), "rail_metal_base")
-    for k in range(5):
-        mb.box((-2.2 + k * 1.1, -6.3, 0.02), (0.55, 0.3, 0.02), "hazard_orange" if k % 2 == 0 else "decal_black")
+    for k in (0, 1, 3, 4):  # floor stripes either side of the corridor
+        mb.box((-2.2 + k * 1.1, -5.8, 0.02), (0.55, 0.3, 0.02), "hazard_orange" if k % 2 == 0 else "decal_black")
     return mb.to_object("SM_Track_Lift_StationBottom")
 
 
@@ -598,13 +612,15 @@ def SM_Track_Lift_StationTop():
     """Top (drive) station: bull wheel, motor house with gearbox, operator cabin, roof (6 m)."""
     mb = lr.MeshBuilder(seed=62)
     wheel_assembly(mb, -4.6)
+    cable_ends(mb, -4.6)
     lift_housing(mb, 6.0, 4.4, 3.4)
     # motor house beside the wheel
     mb.box((-3.0, -4.6, 1.0), (1.6, 2.0, 2.0), {"top": "galv_light", "side": "steel_blue_base"}, bevel=0.04)
     mb.box((-2.18, -4.6, 1.2), (0.04, 1.2, 0.8), "rail_metal_dark")  # vent
     for k in range(5):
         mb.box((-2.15, -4.6, 0.9 + k * 0.15), (0.03, 1.1, 0.04), "rail_metal_light")
-    mb.cylinder((-2.2, -4.6, 0.35), (-0.12, -4.6, 0.35), 0.1, "hazard_orange", segments=8)  # drive shaft
+    # drive shaft into the wheel axle
+    mb.cylinder((-2.2, -4.6, CABLE_Z + 0.6), (CABLE_X - 0.4, -4.6, CABLE_Z + 0.6), 0.1, "hazard_orange", segments=8)
     mb.box((-3.0, -4.6, 2.15), (1.8, 2.2, 0.15), "roof_red_dark", bevel=0.02)
     # operator cabin with windows
     cx, cy = 3.2, -1.0
@@ -754,46 +770,48 @@ def SM_Track_TrashBin():
     return mb.to_object("SM_Track_TrashBin")
 
 
-def mini_tub(mb, base, yaw, cell, seed=0):
-    """Simplified sled tub (decor) at base position."""
+def decor_sled(mb, base, yaw, colour, wheels=False):
+    """Low-poly sled from the same body generator as SM_Sled_* (spec_decor), real colour cells."""
     import sleds_build as sb
-    S = [(0.68, 0.24, 0.18, 0.12, 0.42, 0.07, 0.05), (0.5, 0.37, 0.31, 0.085, 0.4, 0.06, 0.05),
-         (0.0, 0.375, 0.32, 0.08, 0.31, 0.06, 0.05), (-0.5, 0.33, 0.27, 0.1, 0.31, 0.06, 0.05),
-         (-0.69, 0.13, 0.09, 0.14, 0.25, 0.04, 0.03)]
+    sp = sb.spec_decor()
+    S = sp["stations"]
     before = set(mb.bm.faces)
-    sb.build_tub(mb, S, [(1, 4)], 2, 1, 0.13, 0.035)
+    sb.build_body(mb, sp)
+    fam = {"tint_white": colour + "_light", "tint_light": colour + "_base", "tint_mid": colour + "_dark",
+           "tint_dark": colour + "_deep"}
+    for f in mb.bm.faces:
+        if f not in before:
+            n = lr.cell_name(f[mb.pal])
+            if n in fam:
+                f[mb.pal] = lr.cell_index(fam[n])
+    sb.skirt(mb, S)
+    r, z = sp["bumper_r"], sp["bumper_z"]
+    mb.sweep(sb.bumper_path(S, [3, 4], S[-1][0] - r * 0.6, z, off=0.01), r, "rubber", sides=4)
+    mb.sweep(sb.bumper_path(S, [1, 0], S[0][0] + r * 0.6, z, off=0.01), r * 1.1, "rubber", sides=4)
+    if wheels:
+        for x, y in ((0.3, -0.48), (-0.3, -0.48), (0.3, 0.55), (-0.3, 0.55)):
+            mb.cylinder((x - 0.022, y, 0.05), (x + 0.022, y, 0.05), 0.05, "rubber", segments=6, cap_cell="chrome_base")
     new = [f for f in mb.bm.faces if f not in before]
-    # recolour tint -> real sled colours
-    fam = {"tint_white": cell + "_light", "tint_light": cell + "_base", "tint_mid": cell + "_dark",
-           "tint_dark": cell + "_deep"}
-    for f in new:
-        n = lr.cell_name(f[mb.pal])
-        if n in fam:
-            f[mb.pal] = lr.cell_index(fam[n])
-    m = Matrix.Translation(base) @ Matrix.Rotation(yaw, 4, "Z")
-    mb.transform(new, m)
+    mb.transform(new, Matrix.Translation(base) @ Matrix.Rotation(yaw, 4, "Z"))
     return new
 
 
 @module
 def SM_Track_SledStack():
-    """Decor: sleds waiting at the bottom - a nested stack of 4 + 2 parked beside it."""
+    """Decor: sleds waiting at the bottom - a nested stack of 4 on a pallet + 2 parked beside it."""
     mb = lr.MeshBuilder(seed=91)
     rng = random.Random(9)
     cols = ["sled_orange", "sled_teal", "sled_red", "sled_yellow", "sled_orange", "sled_teal"]
     for k in range(4):
-        f = mini_tub(mb, Vector((rng.uniform(-0.03, 0.03), rng.uniform(-0.04, 0.04), k * 0.13)),
-                     rng.uniform(-0.06, 0.06), cols[k])
-    for k, x in enumerate((0.95, 1.8)):
-        mini_tub(mb, Vector((x, 0.1 * k, 0.0)), rng.uniform(-0.15, 0.15), cols[4 + k])
+        decor_sled(mb, Vector((rng.uniform(-0.02, 0.02), rng.uniform(-0.03, 0.03), 0.03 + k * 0.17)),
+                   rng.uniform(-0.04, 0.04), cols[k])
+    for k, x in enumerate((1.0, 1.95)):
+        decor_sled(mb, Vector((x, 0.1 * k, 0.0)), rng.uniform(-0.12, 0.12), cols[4 + k], wheels=True)
     # wooden pallet under the stack
     for dx in (-0.3, 0.0, 0.3):
-        mb.box((dx, 0, 0.03), (0.1, 1.5, 0.06), "wood_base")
+        mb.box((dx, 0, 0.05), (0.1, 1.5, 0.03), "wood_base")
     for k in range(3):
-        mb.box((0, -0.6 + k * 0.6, 0.0), (0.8, 0.12, 0.04), "wood_dark")
-    for f in mb.bm.faces:
-        f.normal_update()
-    # stack sits on pallet
+        mb.box((0, -0.6 + k * 0.6, 0.02), (0.8, 0.12, 0.04), "wood_dark")
     return mb.to_object("SM_Track_SledStack")
 
 
@@ -807,12 +825,13 @@ def build_all():
     return objs
 
 
-def export_all(objs):
+def export_all(objs, only=None):
     out_dir = lr.unity_model_dir("Track")
     rep = []
     for name, ob in objs.items():
         h = lr.hierarchy(ob)
-        lr.export_fbx(h, os.path.join(out_dir, name + ".fbx"))
+        if only is None or name in only:
+            lr.export_fbx(h, os.path.join(out_dir, name + ".fbx"))
         rep.append((name, lr.tri_count(h)))
     return rep
 
@@ -906,22 +925,31 @@ def render_kit(objs):
 
     # --- scene 3: lift
     shown = [road(0.1, 0.1, 50, "PreviewDummy3")]
-    lane = road(26, 2.0, 2.0, "PreviewLiftLane")
+    # same layout as TrackSceneBuilder.BuildArtLift: lift from y = 2 to y = -24
+    lane = road(26, 3.0, 2.0, "PreviewLiftLane")
     shown.append(lane)
     shown.append(copy(objs["SM_Track_Lift_StationBottom"], (0, 2.0, 0)))
     shown.append(copy(objs["SM_Track_Lift_StationTop"], (0, -18.0, 0)))
-    for y in range(4, 20, 4):
-        shown.append(copy(objs["SM_Track_Lift_CablePost"], (0, -y + 2.0 - 2, 0)))
-    for y in range(0, 20, 4):
-        shown.append(copy(objs["SM_Track_Lift_Cable_4m"], (0, -y + 0.8, 0)))
-        shown.append(copy(objs["SM_Track_Lift_RampRail_4m"], (1.2, -y - 2.0, 0)))
-        shown.append(copy(objs["SM_Track_Lift_RampRail_4m"], (-1.2, -y - 2.0, 0)))
-    shown.append(copy(objs["SM_Track_Lift_Hook"], (0, -8.2, 0.255)))
+    for y in range(-4, -17, -6):
+        shown.append(copy(objs["SM_Track_Lift_CablePost"], (CABLE_X, y, 0)))
+    for y in range(-1, -21, -4):
+        shown.append(copy(objs["SM_Track_Lift_Cable_4m"], (CABLE_X, y, 0)))
+    for y in range(-4, -16, -4):
+        shown.append(copy(objs["SM_Track_Lift_RampRail_4m"], (1.55, y, 0)))
+        shown.append(copy(objs["SM_Track_Lift_RampRail_4m"], (-1.55, y, 0)))
+    shown.append(copy(objs["SM_Track_Lift_Hook"], (CABLE_X, -8.2, CABLE_Z)))
     frame_objs = []
     for o in shown[1:]:
         frame_objs += lr.hierarchy(o)
     made = lr.render_preview(frame_objs, os.path.join(ren, "track_lift.png"), size=1024, bg="#BFD8E6",
                              view=(1.3, 0.9, 0.8), aspect=4 / 3, margin=1.0)
+    lr.cleanup(made)
+    # lane-level view into the top station: the sled corridor must be empty
+    made = lr.render_preview(frame_objs, os.path.join(ren, "track_lift_lane.png"), size=1024, bg="#BFD8E6",
+                             aspect=4 / 3, lens=22, cam_loc=(0.35, -13.5, 0.95), target=(-0.25, -24.0, 0.6))
+    lr.cleanup(made)
+    made = lr.render_preview(frame_objs, os.path.join(ren, "track_lift_wheel.png"), size=1024, bg="#BFD8E6",
+                             aspect=4 / 3, lens=24, cam_loc=(1.5, -2.6, 1.5), target=(-0.75, 0.8, 0.8))
     lr.cleanup(made)
     for o in shown:
         lr.cleanup(lr.hierarchy(o))
@@ -951,6 +979,8 @@ def render_kit(objs):
     shown = []
     for k, n in enumerate(row):
         shown.append(copy(objs[n], (-k * 1.0, 0, 0)))
+    shown.append(copy(objs["SM_Track_Net_4m"], (-15.0, 0.0, 0), 90))
+    shown.append(copy(objs["SM_Track_SledStack"], (-16.2, 0, 0), 180))
     frame_objs = []
     for o in shown:
         frame_objs += lr.hierarchy(o)
@@ -967,7 +997,12 @@ if __name__ == "__main__":
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     objs = build_all()
     # lay the kit out in a grid in the .blend for browsing (exported at the origin first)
-    rep = export_all(objs)
+    only = None
+    if "--only" in argv:
+        only = set(argv[argv.index("--only") + 1].split(","))
+        unknown = only - set(MODULES)
+        assert not unknown, "unknown modules: %s" % sorted(unknown)
+    rep = export_all(objs, only)
     for i, (name, ob) in enumerate(objs.items()):
         ob.location = (0, 0, 0)
     if "--no-render" not in argv:

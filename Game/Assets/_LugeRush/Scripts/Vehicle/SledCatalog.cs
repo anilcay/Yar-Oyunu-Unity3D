@@ -14,32 +14,49 @@ namespace LugeRush.Vehicle
         {
             public SledType Type;
             public SledStats Stats;
-            [Tooltip("Optional art prefab placed under SledVisual (null = keep placeholder).")]
+            [Tooltip("Complete sled prefab (physics root + SledVisual with art model and rider(s)). Prefabs/Sleds/Sled_<Type>.")]
+            public GameObject Prefab;
+            [Tooltip("Deprecated: kept for old data. Use Prefab.")]
             public GameObject VisualPrefab;
         }
 
         public Entry[] Sleds = Array.Empty<Entry>();
 
+        // ART_GUIDE sled colours: orange #F2792B, red #D93A3A, yellow #F2C230, turquoise #3BB8C4.
         public Color[] BodyColors =
         {
-            new Color(1.00f, 0.45f, 0.05f), // Orange
-            new Color(0.85f, 0.10f, 0.10f), // Red
-            new Color(1.00f, 0.82f, 0.10f), // Yellow
-            new Color(0.10f, 0.75f, 0.80f), // Turquoise
+            new Color(0.949f, 0.475f, 0.169f),
+            new Color(0.851f, 0.227f, 0.227f),
+            new Color(0.949f, 0.761f, 0.188f),
+            new Color(0.231f, 0.722f, 0.769f),
         };
 
+        // Helmet palette cells (row 5): yellow, blue, green, black, white, pink, red, purple (RiderAppearance index = array index).
         public Color[] HelmetColors =
         {
-            new Color(1.00f, 0.85f, 0.10f), // yellow
-            new Color(0.15f, 0.35f, 0.90f), // blue
-            new Color(0.15f, 0.70f, 0.25f), // green
-            new Color(0.08f, 0.08f, 0.08f), // black
+            new Color(0.949f, 0.761f, 0.188f),
+            new Color(0.176f, 0.435f, 0.820f),
+            new Color(0.369f, 0.761f, 0.290f),
+            new Color(0.137f, 0.141f, 0.153f),
+            new Color(0.941f, 0.941f, 0.941f),
+            new Color(0.910f, 0.416f, 0.627f),
+            new Color(0.851f, 0.227f, 0.227f),
+            new Color(0.482f, 0.310f, 0.788f),
         };
 
-        public SledStats GetStats(SledType type)
+        public Entry Get(SledType type)
         {
-            foreach (var e in Sleds) if (e != null && e.Type == type) return e.Stats;
-            return Sleds.Length > 0 ? Sleds[0].Stats : null;
+            foreach (var e in Sleds) if (e != null && e.Type == type) return e;
+            return Sleds.Length > 0 ? Sleds[0] : null;
+        }
+
+        public SledStats GetStats(SledType type) => Get(type)?.Stats;
+
+        /// <summary>Full sled prefab for <paramref name="type"/> (null when not built yet).</summary>
+        public GameObject GetPrefab(SledType type)
+        {
+            foreach (var e in Sleds) if (e != null && e.Type == type) return e.Prefab;
+            return null;
         }
 
         public Color GetBodyColor(SledColor color) => BodyColors.Length == 0 ? Color.white : BodyColors[(int)color % BodyColors.Length];

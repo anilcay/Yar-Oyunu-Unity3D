@@ -25,16 +25,16 @@ MonoBehaviour:
   SlopeGravityMultiplier: 2.5
   RollingResistance: 0.015
   DragCoefficient: 0.0030882477
-  GripLateral: 7.5
-  SteerRate: 100
-  SteerSpeedFalloff: 0.04
+  GripLateral: 8
+  SteerRate: 102
+  SteerSpeedFalloff: 0.038
   SteerResponse: 11
   BrakeForce: 6.1
   DriftMinSpeed: 9
-  DriftGripMultiplier: 0.35999998
+  DriftGripMultiplier: 0.36
   DriftSteerMultiplier: 1.3
   DriftBrakeScale: 0.25
-  DriftChargeRate: 0.45000002
+  DriftChargeRate: 0.75
   BoostForce: 4.5
   BoostDuration: 1.2
   MiniBoostScale: 0.55
@@ -43,8 +43,10 @@ MonoBehaviour:
   SlipstreamMinDistance: 2
   SlipstreamMaxDistance: 10
   SlipstreamHalfWidth: 1.5
-  SlipstreamDragReduction: 0.45
-  SlipstreamChargeTime: 1.6
+  SlipstreamDragReduction: 0.35
+  SlipstreamChargeTime: 3
+  SlipstreamDecayRate: 1
+  SlipstreamCooldown: 11.5
   SlipstreamBoostForce: 3
   SlipstreamBoostDuration: 0.8
   CollisionKnockbackScale: 0.6

@@ -37,6 +37,7 @@ namespace LugeRush.Vehicle
         private float driftCharge;
         private float driftGrace;
         private float slipCharge;
+        private float slipCooldown;
         private float boostTimer;
         private float boostAccel;
         private float startPenaltyTimer;
@@ -57,6 +58,17 @@ namespace LugeRush.Vehicle
         public bool IsDrifting { get; private set; }
         public bool IsOnLift { get; private set; }
         public bool IsGrounded => grounded;
+        /// <summary>Half width (x) / half length (z) of the suspension probe rectangle (per sled model).</summary>
+        public Vector2 ProbeHalfExtents
+        {
+            get => probeHalfExtents;
+            set { probeHalfExtents = value; UpdateProbeOffsets(); }
+        }
+        public Vector3 CenterOfMass
+        {
+            get => centerOfMass;
+            set { centerOfMass = value; if (rb != null) rb.centerOfMass = value; }
+        }
         public bool IsScrapingBarrier { get; private set; }
         public Vector3 GroundNormal => groundNormal;
         public bool ControlsLocked { get; set; }
@@ -97,6 +109,8 @@ namespace LugeRush.Vehicle
         public void ConfigureBody()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
+            // Swap the art model / colliders when the sled type changed (menu selection, random bots).
+            if (Stats != null && TryGetComponent(out SledVariant variant)) variant.ApplyType(Stats.Type);
             if (Stats != null) rb.mass = Stats.Mass;
             rb.useGravity = true;
             rb.linearDamping = 0f;
@@ -116,7 +130,11 @@ namespace LugeRush.Vehicle
                 bounceCombine = PhysicsMaterialCombine.Minimum
             };
             foreach (var col in GetComponentsInChildren<Collider>()) col.sharedMaterial = slick;
+            UpdateProbeOffsets();
+        }
 
+        private void UpdateProbeOffsets()
+        {
             probeOffsets[0] = new Vector3(-probeHalfExtents.x, probeStartHeight, probeHalfExtents.y);
             probeOffsets[1] = new Vector3(probeHalfExtents.x, probeStartHeight, probeHalfExtents.y);
             probeOffsets[2] = new Vector3(-probeHalfExtents.x, probeStartHeight, -probeHalfExtents.y);
@@ -288,11 +306,19 @@ namespace LugeRush.Vehicle
                 }
             }
 
+            // Drag reduction applies whenever drafting; the boost meter only fills outside the cooldown.
             float rate = 1f / Mathf.Max(0.1f, Stats.SlipstreamChargeTime);
-            slipCharge = InSlipstream ? slipCharge + rate * dt : Mathf.Max(0f, slipCharge - rate * 0.5f * dt);
+            if (slipCooldown > 0f)
+            {
+                slipCooldown -= dt;
+                slipCharge = 0f;
+                return;
+            }
+            slipCharge = InSlipstream ? slipCharge + rate * dt : Mathf.Max(0f, slipCharge - rate * Stats.SlipstreamDecayRate * dt);
             if (slipCharge >= 1f)
             {
                 slipCharge = 0f;
+                slipCooldown = Stats.SlipstreamCooldown;
                 StartBoost(Stats.SlipstreamBoostForce, Stats.SlipstreamBoostDuration, SledBoostKind.Slipstream);
             }
         }
@@ -360,6 +386,7 @@ namespace LugeRush.Vehicle
             IsDrifting = false;
             driftCharge = 0f;
             slipCharge = 0f;
+            slipCooldown = 0f;
             boostTimer = 0f;
             startPenaltyTimer = 0f;
             groundNormal = rot * Vector3.up;

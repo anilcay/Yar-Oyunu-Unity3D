@@ -1,16 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LugeRush.Vehicle
 {
     /// <summary>
-    /// Feeds the rider Animator (see ARCHITECTURE.md, animation contract) from the SledController.
-    /// Does nothing when there is no Animator or a parameter is missing.
+    /// Feeds the rider Animator(s) (see ARCHITECTURE.md, animation contract) from the SledController.
+    /// Supports several riders (Tandem driver + passenger). Missing parameters are skipped.
+    /// If the controller has a layer named "Brake", its weight follows the (smoothed) brake input.
     /// </summary>
     public class SledAnimatorBridge : MonoBehaviour
     {
+        public const string BrakeLayerName = "Brake";
+
         [SerializeField] private SledController controller;
         [SerializeField] private Animator animator;
         [SerializeField] private float damping = 0.08f;
+        [SerializeField] private float brakeLayerSpeed = 8f;
 
         private static readonly int SteerId = Animator.StringToHash("Steer");
         private static readonly int BrakeId = Animator.StringToHash("Brake");
@@ -22,17 +27,35 @@ namespace LugeRush.Vehicle
         private static readonly int WinId = Animator.StringToHash("Win");
         private static readonly int LoseId = Animator.StringToHash("Lose");
 
-        private bool hasSteer, hasBrake, hasSpeed, hasDrift, hasLift, hasPush, hasBump, hasWin, hasLose;
+        private class Target
+        {
+            public Animator Animator;
+            public bool Steer, Brake, Speed, Drift, Lift, Push, Bump, Win, Lose;
+            public int BrakeLayer = -1;
+        }
+
+        private readonly List<Target> targets = new List<Target>();
+        private float brakeWeight;
+
+        public IReadOnlyList<Animator> Animators
+        {
+            get
+            {
+                var list = new List<Animator>();
+                foreach (var t in targets) list.Add(t.Animator);
+                return list;
+            }
+        }
 
         private void Awake()
         {
             if (controller == null) controller = GetComponent<SledController>();
-            if (animator == null) animator = GetComponentInChildren<Animator>();
-            CacheParameters();
+            Rebind();
         }
 
         private void OnEnable()
         {
+            if (controller == null) controller = GetComponent<SledController>();
             if (controller == null) return;
             controller.Bumped += OnBumped;
             controller.BoostStarted += OnBoost;
@@ -49,39 +72,69 @@ namespace LugeRush.Vehicle
         public void SetAnimator(Animator newAnimator)
         {
             animator = newAnimator;
-            CacheParameters();
+            targets.Clear();
+            Add(newAnimator);
         }
 
-        private void CacheParameters()
+        /// <summary>Re-collects every rider Animator under this sled (after SledVariant swapped the model).</summary>
+        public void Rebind()
         {
-            hasSteer = hasBrake = hasSpeed = hasDrift = hasLift = hasPush = hasBump = hasWin = hasLose = false;
-            if (animator == null || animator.runtimeAnimatorController == null) return;
-            foreach (var p in animator.parameters)
+            targets.Clear();
+            var all = GetComponentsInChildren<Animator>(true);
+            if (all.Length == 0 && animator != null) Add(animator);
+            foreach (var a in all) Add(a);
+            animator = targets.Count > 0 ? targets[0].Animator : null;
+        }
+
+        private void Add(Animator a)
+        {
+            if (a == null) return;
+            var t = new Target { Animator = a };
+            if (a.runtimeAnimatorController != null)
             {
-                int h = p.nameHash;
-                hasSteer |= h == SteerId; hasBrake |= h == BrakeId; hasSpeed |= h == Speed01Id;
-                hasDrift |= h == DriftId; hasLift |= h == OnLiftId; hasPush |= h == PushId;
-                hasBump |= h == BumpId; hasWin |= h == WinId; hasLose |= h == LoseId;
+                foreach (var p in a.parameters)
+                {
+                    int h = p.nameHash;
+                    t.Steer |= h == SteerId; t.Brake |= h == BrakeId; t.Speed |= h == Speed01Id;
+                    t.Drift |= h == DriftId; t.Lift |= h == OnLiftId; t.Push |= h == PushId;
+                    t.Bump |= h == BumpId; t.Win |= h == WinId; t.Lose |= h == LoseId;
+                }
+                t.BrakeLayer = a.GetLayerIndex(BrakeLayerName);
             }
+            targets.Add(t);
         }
 
         private void Update()
         {
-            if (animator == null || controller == null) return;
+            if (controller == null || targets.Count == 0) return;
             var input = controller.ControlsLocked ? SledInput.None : controller.LastInput;
             float dt = Time.deltaTime;
-            if (hasSteer) animator.SetFloat(SteerId, input.Steer, damping, dt);
-            if (hasBrake) animator.SetFloat(BrakeId, input.Brake, damping, dt);
-            if (hasSpeed) animator.SetFloat(Speed01Id, controller.Speed01, damping, dt);
-            if (hasDrift) animator.SetBool(DriftId, controller.IsDrifting);
-            if (hasLift) animator.SetBool(OnLiftId, controller.IsOnLift);
+            bool brakeAllowed = !controller.IsDrifting && !controller.IsOnLift;
+            brakeWeight = Mathf.MoveTowards(brakeWeight, brakeAllowed ? input.Brake : 0f, brakeLayerSpeed * dt);
+            foreach (var t in targets)
+            {
+                var a = t.Animator;
+                if (a == null || !a.isActiveAndEnabled || a.runtimeAnimatorController == null) continue;
+                if (t.Steer) a.SetFloat(SteerId, input.Steer, damping, dt);
+                if (t.Brake) a.SetFloat(BrakeId, input.Brake, damping, dt);
+                if (t.Speed) a.SetFloat(Speed01Id, controller.Speed01, damping, dt);
+                if (t.Drift) a.SetBool(DriftId, controller.IsDrifting);
+                if (t.Lift) a.SetBool(OnLiftId, controller.IsOnLift);
+                if (t.BrakeLayer >= 0) a.SetLayerWeight(t.BrakeLayer, brakeWeight);
+            }
         }
 
-        private void OnBumped(Collision c) { if (animator != null && hasBump) animator.SetTrigger(BumpId); }
+        private void Fire(int id, System.Func<Target, bool> has)
+        {
+            foreach (var t in targets)
+                if (t.Animator != null && t.Animator.isActiveAndEnabled && has(t)) t.Animator.SetTrigger(id);
+        }
+
+        private void OnBumped(Collision c) => Fire(BumpId, t => t.Bump);
         private void OnBoost(SledBoostKind kind) { if (kind == SledBoostKind.Start) TriggerPush(); }
 
-        public void TriggerPush() { if (animator != null && hasPush) animator.SetTrigger(PushId); }
-        public void TriggerWin() { if (animator != null && hasWin) animator.SetTrigger(WinId); }
-        public void TriggerLose() { if (animator != null && hasLose) animator.SetTrigger(LoseId); }
+        public void TriggerPush() => Fire(PushId, t => t.Push);
+        public void TriggerWin() => Fire(WinId, t => t.Win);
+        public void TriggerLose() => Fire(LoseId, t => t.Lose);
     }
 }

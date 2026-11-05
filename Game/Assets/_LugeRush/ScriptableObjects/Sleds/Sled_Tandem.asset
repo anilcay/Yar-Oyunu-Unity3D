@@ -20,21 +20,21 @@ MonoBehaviour:
   UiWeight: 5
   UiDrift: 2
   Mass: 185
-  MaxSpeed: 27
+  MaxSpeed: 34
   SpeedCapMultiplier: 1.3
-  SlopeGravityMultiplier: 2.5
+  SlopeGravityMultiplier: 2.15
   RollingResistance: 0.015
-  DragCoefficient: 0.0024809348
-  GripLateral: 6
-  SteerRate: 90
-  SteerSpeedFalloff: 0.04
-  SteerResponse: 10
+  DragCoefficient: 0.0013276786
+  GripLateral: 7.5
+  SteerRate: 101
+  SteerSpeedFalloff: 0.038
+  SteerResponse: 9
   BrakeForce: 5.5
   DriftMinSpeed: 9
   DriftGripMultiplier: 0.39
   DriftSteerMultiplier: 1.25
   DriftBrakeScale: 0.25
-  DriftChargeRate: 0.4
+  DriftChargeRate: 0.65
   BoostForce: 4.5
   BoostDuration: 1.2
   MiniBoostScale: 0.55
@@ -43,11 +43,13 @@ MonoBehaviour:
   SlipstreamMinDistance: 2
   SlipstreamMaxDistance: 10
   SlipstreamHalfWidth: 1.5
-  SlipstreamDragReduction: 0.45
-  SlipstreamChargeTime: 1.6
+  SlipstreamDragReduction: 0.35
+  SlipstreamChargeTime: 3
+  SlipstreamDecayRate: 1
+  SlipstreamCooldown: 11.5
   SlipstreamBoostForce: 3
   SlipstreamBoostDuration: 0.8
-  CollisionKnockbackScale: 0.6
+  CollisionKnockbackScale: 0.45
   BarrierFriction: 0.9
   SuspensionLength: 0.2
   SuspensionStiffness: 60

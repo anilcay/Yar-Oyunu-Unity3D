@@ -230,8 +230,15 @@ def seat_shell(mb, sy, rx=0.24, ry=0.17, top_c=0.66, top_s=0.38, recline=0.07, t
     return top_center
 
 
-def cockpit_parts(mb, sy, front_y, console_h=0.21):
-    """Seat pad with thigh bolsters + centre console (leg divider) from the seat to the foot wall."""
+def cockpit_parts(mb, sy, front_y, console_h=0.21, detail=True):
+    """Seat pad with thigh bolsters + centre console (leg divider) from the seat to the foot wall.
+    detail=False: unbevelled pad + console only (decor sleds)."""
+    if not detail:
+        mb.box((0, sy + 0.03, FLOOR_Z + 0.012), (0.40, 0.30, 0.025), "tint_light")
+        y0, y1 = sy - 0.18, front_y
+        mb.box((0, (y0 + y1) / 2, (FLOOR_Z + console_h) / 2), (0.13, abs(y1 - y0), console_h - FLOOR_Z),
+               {"top": "tint_light", "side": "tint_mid"}, taper=(0.65, 1.0))
+        return
     mb.box((0, sy + 0.03, FLOOR_Z + 0.012), (0.40, 0.30, 0.025), {"top": "tint_light", "side": "tint_mid"},
            bevel=0.01)
     for sx in (-1, 1):
@@ -329,6 +336,17 @@ def spec_mini():
                 bumper_r=0.055, bumper_z=0.17)
 
 
+def spec_decor():
+    """Classic form with fewer stations: same generator, low tris for track decor (SledStack)."""
+    sy = 0.30
+    S = [st(0.70, 0.28, 0.27, zb=0.13), st(0.645, 0.355, 0.29, zb=0.11), st(0.25, 0.375, 0.29),
+         st(-0.25, 0.345, 0.265), st(sy - SOLE_FWD - 0.045, 0.28, 0.255),
+         st(-0.725, 0.13, 0.225, zb=0.13, rt=0.04, rb=0.03)]
+    return dict(name="Decor", stations=S, cockpits=[(1, 4)], rim=0.045, seats=[sy], detail=False,
+                shells=[dict(rx=0.24, ry=0.17, top_c=0.66, top_s=0.38, recline=0.07, n=7)],
+                bumper_r=0.03, bumper_z=0.165)
+
+
 # ----------------------------------------------------------------------------- body
 def build_body(mb, sp):
     """Low tub + moulded seat shell(s) + seat pads + leg console.  Tint cells only.
@@ -344,7 +362,7 @@ def build_body(mb, sp):
             prev = sp["seats"][k - 1]
             front = prev + sp["shells"][k - 1]["ry"] + 0.07
         walls.append(front)
-        cockpit_parts(mb, sy, front)
+        cockpit_parts(mb, sy, front, detail=sp.get("detail", True))
     if sp["name"] == "Sport":  # voluminous side pods (moulded, tinted)
         for sx in (-1, 1):
             pod = [(0.80, 0.33, 0.04, 0.13, 0.21), (0.66, 0.375, 0.07, 0.11, 0.235), (0.40, 0.39, 0.08, 0.11, 0.235),

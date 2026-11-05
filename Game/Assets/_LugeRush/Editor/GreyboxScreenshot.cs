@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using LugeRush.Race;
 using LugeRush.Track;
 using LugeRush.Vehicle;
@@ -38,6 +39,15 @@ namespace LugeRush.Editor
                     visuals.ApplyColors(catalog.GetBodyColor((SledColor)(p.GridSlot % 4)), catalog.GetHelmetColor(p.GridSlot));
                 var root = p.transform.Find(SledVisuals.VisualRootName);
                 if (root != null && sled != null) root.localPosition = new Vector3(0f, -sled.RestHoverHeight, 0f);
+                // Edit mode has no Animator update: pose the riders in Sit_Idle and place the 1st person anchor.
+                foreach (var anim in p.GetComponentsInChildren<Animator>())
+                {
+                    var idle = anim.runtimeAnimatorController != null
+                        ? anim.runtimeAnimatorController.animationClips.FirstOrDefault(c => c.name == "Sit_Idle") : null;
+                    if (idle != null) idle.SampleAnimation(anim.gameObject, 0f);
+                }
+                var fpAnchor = p.GetComponent<RiderFirstPersonAnchor>();
+                if (fpAnchor != null) { fpAnchor.Rebind(); fpAnchor.Snap(); }
                 i++;
             }
             if (player == null)
@@ -58,7 +68,7 @@ namespace LugeRush.Editor
 
             var fp = SledVisuals.FindDeep(t, "Camera_FP");
             foreach (var r in t.GetComponentsInChildren<Renderer>())
-                if (r.name.StartsWith("Helmet")) r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+                if (r.name.StartsWith("Helmet") || r.name.StartsWith("Head_")) r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
             Render(cam, fp.position, fp.rotation, 75f, Path.Combine(outDir, "dev_greybox_fp.png"));
 
             var track = Object.FindFirstObjectByType<TrackPath>();

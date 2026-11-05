@@ -30,6 +30,10 @@ namespace LugeRush.AI
         [Header("Behaviour")]
         [Tooltip("Probability of drifting through a tight corner.")]
         [Range(0f, 1f)] public float DriftUsage = 0.3f;
+        [Tooltip("Probability that a drifted corner is held until the super boost level (meter full).")]
+        [Range(0f, 1f)] public float SuperDriftUsage = 0.3f;
+        [Tooltip("Corner curvature (1/m) from which a drift is considered.")]
+        public float DriftCurvature = 0.03f;
         [Tooltip("Start push reaction delay after GO (seconds) and its random spread.")]
         public float PushReaction = 0.15f;
         public float PushReactionSpread = 0.1f;

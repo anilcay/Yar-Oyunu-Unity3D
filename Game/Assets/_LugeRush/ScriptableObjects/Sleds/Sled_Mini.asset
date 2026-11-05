@@ -22,19 +22,19 @@ MonoBehaviour:
   Mass: 85
   MaxSpeed: 22.8
   SpeedCapMultiplier: 1.3
-  SlopeGravityMultiplier: 2.5
+  SlopeGravityMultiplier: 2.8
   RollingResistance: 0.015
-  DragCoefficient: 0.0034791506
+  DragCoefficient: 0.003930617
   GripLateral: 9
-  SteerRate: 120
-  SteerSpeedFalloff: 0.04
+  SteerRate: 125
+  SteerSpeedFalloff: 0.055
   SteerResponse: 13
   BrakeForce: 6.7
   DriftMinSpeed: 9
-  DriftGripMultiplier: 0.29999998
+  DriftGripMultiplier: 0.3
   DriftSteerMultiplier: 1.4
   DriftBrakeScale: 0.25
-  DriftChargeRate: 0.55
+  DriftChargeRate: 0.9
   BoostForce: 4.5
   BoostDuration: 1.2
   MiniBoostScale: 0.55
@@ -43,11 +43,13 @@ MonoBehaviour:
   SlipstreamMinDistance: 2
   SlipstreamMaxDistance: 10
   SlipstreamHalfWidth: 1.5
-  SlipstreamDragReduction: 0.45
-  SlipstreamChargeTime: 1.6
+  SlipstreamDragReduction: 0.35
+  SlipstreamChargeTime: 3
+  SlipstreamDecayRate: 1
+  SlipstreamCooldown: 11.5
   SlipstreamBoostForce: 3
   SlipstreamBoostDuration: 0.8
-  CollisionKnockbackScale: 0.6
+  CollisionKnockbackScale: 0.85
   BarrierFriction: 0.9
   SuspensionLength: 0.2
   SuspensionStiffness: 60

@@ -2674,9 +2674,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: LugeRush.Runtime::LugeRush.Vehicle.SledVisuals
   controller: {fileID: 0}
   visualRoot: {fileID: 0}
-  handlebarMaxAngle: 25
+  handlebarMaxAngle: 22
+  handlebarDriftAngle: 30
+  handlebarBrakeOffset: {x: 0, y: 0.07, z: -0.13}
   frontWheelSteerAngle: 12
-  wheelRadius: 0.07
+  wheelRadius: 0.05
   steerSmoothing: 12
   snapVisualToGround: 1
 --- !u!114 &7579201824098616713
@@ -2694,6 +2696,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   animator: {fileID: 0}
   damping: 0.08
+  brakeLayerSpeed: 8
 --- !u!114 &2945709170580248996
 MonoBehaviour:
   m_ObjectHideFlags: 0

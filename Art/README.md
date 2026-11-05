@@ -16,7 +16,7 @@ python Art/Scripts/make_palette.py                 # paleti yeniden üret (satı
 | Kızak FBX | `Game/Assets/_LugeRush/Art/Models/Sleds/SM_Sled_{Classic,Sport,Tandem,Mini}.fbx` |
 | Pist FBX | `Game/Assets/_LugeRush/Art/Models/Track/SM_Track_*.fbx` |
 | Kaynak | `Art/Blender/Sleds_<Tip>.blend`, `Art/Blender/Track_Kit.blend` (modüller ızgara halinde) |
-| Önizleme | `Art/Renders/sled_<tip>.png` (4 renk), `sled_<tip>_hero.png` (yakın plan), `sled_<tip>_with_rider(_back).png` (SK_Rider Sit_Idle ile oturma kontrolü), `sled_<tip>_fp.png` (1. şahıs), `track_kit.png`, `track_finish.png`, `track_canopy.png`, `track_lift.png`, `track_props.png` |
+| Önizleme | `Art/Renders/sled_<tip>.png` (4 renk), `sled_<tip>_hero.png` (yakın plan), `sled_<tip>_with_rider(_back).png` (SK_Rider Sit_Idle ile oturma kontrolü), `sled_<tip>_fp.png` (1. şahıs), `track_kit.png`, `track_finish.png`, `track_canopy.png`, `track_lift.png`, `track_lift_lane.png`, `track_lift_wheel.png`, `track_props.png` |
 
 Unity projesi yoksa (`Game/ProjectSettings/ProjectVersion.txt` yok) FBX'ler `Art/Export/<Kategori>/` altına yazılır. `.meta` dosyası üretilmez.
 
@@ -68,7 +68,7 @@ Form: alçak gövde (yan duvar üstü 0.24–0.33 m), gövdeye kalıplanmış ko
 | SM_Track_Curb_2m | 2 m, 0.30 m genişlik, 0.12 m yükseklik | 104 | sarı-siyah 0.5 m bloklar, pist tarafı Unity −X |
 | SM_Track_Rail_4m | 4 m (direkler 0 ve 2 m'de) | 160 | 2 boru: 0.50 / 0.88 m |
 | SM_Track_Rail_End | 1 m | 304 | boruları zemine kıvrılan uç parça; dizinin sonuna |
-| SM_Track_Net_4m | 4 m, 1.9 m yükseklik | 148 | elmas file (çift yüzlü), arka payandalar |
+| SM_Track_Net_4m | 4 m (sınır tam 0–4 m), 1.9 m yükseklik | 144 | elmas file (çift yüzlü), arka payandalar; direkler 2 m aralıkla, ilki başlangıç ucuyla hizalı |
 | SM_Track_Sign_CurveLeft / CurveRight / Slow / Warning / Stop | direk 2.1 m | 104–456 | sarı tabelalar; "YAVAŞ", "DUR" yazıları geometri |
 | SM_Track_MarkerPost_01..05, _100m/_200m/_300m | 1.12 m | 188–724 | numara/mesafe direği (iki yüzde rakam) |
 | SM_Track_StartGate | iç açıklık 5 m, 3.6 m | 2954 | önde "BAŞLANGIÇ", arkada "LUGE RUSH"; çocuklar `Lamp_Red_1..3`, `Lamp_Green` (sürücüye göre soldan sağa) |
@@ -77,8 +77,8 @@ Form: alçak gövde (yan duvar üstü 0.24–0.33 m), gövdeye kalıplanmış ko
 | SM_Track_FinishArch | iç açıklık 5.6 m, 4.2 m | 3968 | yeşil kemer, iki yüzde "LUGE RUSH", damalı bayrak direkleri |
 | SM_Track_FinishLine | 5 × 0.6 m | 120 | damalı bitiş çizgisi |
 | SM_Track_FinishCanopy_4m | 4 m, 6 m genişlik | 744 | çelik çerçeve + oluklu çatı + desensiz kırmızı flama dizileri |
-| SM_Track_Lift_StationBottom | 6 m | 928 | geri dönüş makarası, karşı ağırlık kulesi, kumanda kutusu |
-| SM_Track_Lift_StationTop | 6 m | 1612 | tahrik makarası, motor evi, operatör kabini, "ÇIKIŞ" tabelası |
+| SM_Track_Lift_StationBottom | 6 m | 1032 | geri dönüş makarası (kablo hizası), karşı ağırlık kulesi, kumanda kutusu |
+| SM_Track_Lift_StationTop | 6 m | 1728 | tahrik makarası (kablo hizası), motor evi, operatör kabini, "ÇIKIŞ" tabelası |
 | SM_Track_Lift_CablePost | — | 220 | kabloyu 0.25 m'de tutan makaralı alçak direk (4–8 m'de bir) |
 | SM_Track_Lift_Cable_4m | 4 m | 8 | kablo segmenti, yükseklik 0.255 m |
 | SM_Track_Lift_Hook | — | 160 | pivot = kablo kavrama merkezi; kanca ucu pivotun ~0.18 m üstünde |
@@ -86,7 +86,14 @@ Form: alçak gövde (yan duvar üstü 0.24–0.33 m), gövdeye kalıplanmış ko
 | SM_Track_Tunnel_4m | 4 m, 5.2 m iç genişlik, 2.8 m | 940 | ahşap çerçeve + kırmızı oluklu metal çatı |
 | SM_Track_LightPole | 5 m | 284 | kol Unity −X'e (piste) uzanır; lamba camı `lamp_glass` |
 | SM_Track_TrashBin | 1 m | 192 | |
-| SM_Track_SledStack | ~2.6 m | 840 | iç içe 4 kızak + 2 park etmiş kızak (gerçek renk hücreleri, satır 0) |
+| SM_Track_SledStack | ~2.7 m | 2548 | palette iç içe 4 kızak + 2 park etmiş kızak; `SM_Sled_*` gövde üreticisi (`spec_decor`), gerçek renk hücreleri (satır 0) |
+
+### Lift hizası
+- Kablo hattı şerit merkezinden **Unity +0.75 m** (gidiş yönünün sağı; `TrackSceneBuilder.CableLateral`). `Lift_Cable_4m`, `CablePost` ve `Hook` kendi pivotlarında x = 0'dır; bu ofsetle yerleştirilir.
+- İstasyon modüllerinin pivotu şerit merkezindedir; makara düzlemi modül içinde zaten +0.75 m'dedir, ek ofset verilmez.
+- Makara yarıçapı 0.6 m, merkezi 0.855 m. Kablo makaranın altına 0.255 m'de teğet girer; istasyonun içindeki kablo parçası modüllerin bittiği yere (istasyon başından 3 m) kadar uzanır. Dönüş kablosu makaranın üstünden yer makarasına iner.
+- **Kızak koridoru:** |x| < 0.60 m ve 1.10 m altında istasyonlarda hiç geometri yoktur (en geniş kızak 0.47 m yarı genişlik). Beton plaka, korkuluk, aks ve zemin çizgileri bu koridorun dışındadır.
+- `track_kit.py -- --only A,B` yalnız adı verilen FBX'leri yazar (FBX zaman damgası taşıdığı için diğerleri değişmez).
 
 ## lr_common.py (ortak API — diğer sanatçılar da kullanabilir)
 - `reset_scene()`, `empty(name, loc, parent)`, `set_parent(child, parent)`, `hierarchy(root)`, `tri_count(objs)`, `save_blend(path)`

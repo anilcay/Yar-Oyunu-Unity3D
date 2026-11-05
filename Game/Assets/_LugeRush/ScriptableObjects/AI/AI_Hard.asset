@@ -21,7 +21,9 @@ MonoBehaviour:
   LookAheadMin: 5
   LookAheadTime: 0.5
   SteerGain: 2.4
-  DriftUsage: 0.6
+  DriftUsage: 0.85
+  SuperDriftUsage: 0.85
+  DriftCurvature: 0.03
   PushReaction: 0.05
   PushReactionSpread: 0.05
   RubberBand: 0.08

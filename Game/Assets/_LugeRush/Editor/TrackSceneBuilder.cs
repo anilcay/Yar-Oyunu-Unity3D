@@ -31,9 +31,29 @@ namespace LugeRush.Editor
             public int SledCount = 8;
             public bool PlaceGuardrails = true;
             public float GuardrailCurvature = 0.02f;
+            [Tooltip("Use the art track kit (rails, nets, gates, lift) instead of primitive placeholders.")]
+            public bool UseArtKit = true;
+            [Tooltip("Outer side of curves sharper than this (1/m) gets catch nets instead of rails.")]
+            public float NetCurvature = 0.035f;
             public float GroundSize = 700f;
             public Vector3 GroundCenter = Vector3.zero;
             public BotDifficulty DefaultDifficulty = BotDifficulty.Normal;
+
+            // --- Level builder hooks (defaults keep the Dev_Greybox behaviour) ---
+            [Tooltip("Skip the default sun, sky, fog and ground plane: the caller builds its own environment.")]
+            public bool CustomEnvironment;
+            [Tooltip("Finish arch exactly on the lap line with the canopy behind it; start gate at the head of the grid.")]
+            public bool FinishArchOnLapLine;
+            [Tooltip("StartGrid.FirstRowOffset override (metres behind the lap line), <= 0 keeps the default.")]
+            public float GridFirstRowOffset;
+            [Tooltip("(distance, side -1/+1) -> may an edge module (rail/net) stand here? Null = everywhere.")]
+            public System.Func<float, int, bool> EdgeFilter;
+            [Tooltip("Distance -> may a warning sign stand here? Null = everywhere.")]
+            public System.Func<float, bool> SignFilter;
+            [Tooltip("Called after the track is built, before the sleds, cameras and the scene save.")]
+            public System.Action<TrackPath, TrackMeshBuilder, Transform> PostTrack;
+            [Tooltip("Called after the whole scene exists, right before it is saved.")]
+            public System.Action<Scene> PreSave;
         }
 
         public static Scene BuildScene(TrackDefinition def, string scenePath, Options options = null)
@@ -46,11 +66,12 @@ namespace LugeRush.Editor
             var actions = AssetDatabase.LoadAssetAtPath<InputActionAsset>(SledAssetFactory.InputActionsPath);
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            BuildEnvironment(options);
+            if (!options.CustomEnvironment) BuildEnvironment(options);
 
             var track = BuildTrack(def, scene.name, guardrail, options);
             var path = track.GetComponent<TrackPath>();
             var grid = track.GetComponentInChildren<StartGrid>();
+            options.PostTrack?.Invoke(path, track.GetComponent<TrackMeshBuilder>(), track.transform);
 
             // Race logic
             var raceGo = new GameObject("Race");
@@ -98,10 +119,11 @@ namespace LugeRush.Editor
 
             BuildCameras(roster[0].GetComponent<SledController>());
 
-            var hud = new GameObject("HUD").AddComponent<DebugRaceHud>();
+            var hud = new GameObject("HUD").AddComponent<RaceHud>();
             hud.Manager = manager;
             hud.Player = roster[0];
 
+            options.PreSave?.Invoke(scene);
             EditorAssetUtil.EnsureFolder(System.IO.Path.GetDirectoryName(scenePath));
             EditorSceneManager.SaveScene(scene, scenePath);
             AddToBuildSettings(scenePath);
@@ -139,10 +161,12 @@ namespace LugeRush.Editor
         private static GameObject BuildTrack(TrackDefinition def, string sceneName, GameObject guardrail, Options options)
         {
             string mats = EditorAssetUtil.TrackMaterials;
-            var road = EditorAssetUtil.LitMaterial(mats, "M_Asphalt", new Color(0.13f, 0.13f, 0.14f), 0.55f);
-            var curbY = EditorAssetUtil.LitMaterial(mats, "M_CurbYellow", new Color(1f, 0.78f, 0.05f), 0.4f);
-            var curbB = EditorAssetUtil.LitMaterial(mats, "M_CurbBlack", new Color(0.04f, 0.04f, 0.04f), 0.4f);
-            var skirt = EditorAssetUtil.LitMaterial(mats, "M_Embankment", new Color(0.33f, 0.29f, 0.22f), 0.1f);
+            ArtMaterialFactory.CreateMaterials();
+            // Wet asphalt (smoothness variation map) + palette-matched curbs (ART_GUIDE track colours).
+            var road = AssetDatabase.LoadAssetAtPath<Material>(ArtMaterialFactory.TrackAsphalt);
+            var curbY = AssetDatabase.LoadAssetAtPath<Material>(ArtMaterialFactory.TrackCurbYellow);
+            var curbB = AssetDatabase.LoadAssetAtPath<Material>(ArtMaterialFactory.TrackCurbBlack);
+            var skirt = AssetDatabase.LoadAssetAtPath<Material>(ArtMaterialFactory.TrackSkirt);
             var white = EditorAssetUtil.LitMaterial(mats, "M_LineWhite", new Color(0.95f, 0.95f, 0.95f), 0.3f);
             var arch = EditorAssetUtil.LitMaterial(mats, "M_ArchGreen", new Color(0.1f, 0.55f, 0.2f), 0.4f);
             var cable = EditorAssetUtil.LitMaterial(mats, "M_Cable", new Color(0.08f, 0.08f, 0.08f), 0.6f, 0.8f);
@@ -177,6 +201,17 @@ namespace LugeRush.Editor
             gridGo.transform.SetParent(go.transform, false);
             var grid = gridGo.AddComponent<StartGrid>();
             grid.Track = path;
+            if (options.GridFirstRowOffset > 0f) grid.FirstRowOffset = options.GridFirstRowOffset;
+
+            if (options.UseArtKit && PrefabFactory.LoadTrack("SM_Track_StartGate") != null)
+            {
+                if (options.FinishArchOnLapLine) BuildArtStartFinishOnLine(path, grid);
+                else BuildArtStartFinish(path, grid, builder);
+                BuildArtLift(path, builder, go.transform);
+                if (options.PlaceGuardrails) BuildArtEdges(path, builder, go.transform, options);
+                BuildArtSigns(path, builder, go.transform, options);
+                return go;
+            }
 
             BuildStartLine(path, grid, white, arch, builder);
             BuildLiftVisuals(path, cable, pylon, go.transform);
@@ -193,6 +228,185 @@ namespace LugeRush.Editor
             }
             return go;
         }
+
+        // ---------- Art track kit ----------
+
+        private static GameObject Place(string model, Transform parent, Vector3 pos, Quaternion rot, Vector3? scale = null)
+        {
+            var prefab = PrefabFactory.LoadTrack(model);
+            if (prefab == null) { Debug.LogWarning($"[TrackSceneBuilder] Missing track prefab for {model}"); return null; }
+            var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+            go.transform.SetPositionAndRotation(pos, rot);
+            if (scale.HasValue) go.transform.localScale = scale.Value;
+            return go;
+        }
+
+        /// <summary>
+        /// Kit modules have their pivot at the start end and run along +Z; PlaceAlong centres modules on the sample.
+        /// Right side: shift back half a module. Left side: turn 180° around Y (outer side +X stays outside, no
+        /// negative scale - ARCHITECTURE decision) and shift forward half a module.
+        /// </summary>
+        private static void ToStartPivot(List<GameObject> placed, float length, int side)
+        {
+            foreach (var go in placed)
+            {
+                var t = go.transform;
+                Vector3 f = t.forward;
+                if (side > 0) t.position -= f * (length * 0.5f);
+                else t.SetPositionAndRotation(t.position + f * (length * 0.5f), t.rotation * Quaternion.Euler(0f, 180f, 0f));
+            }
+        }
+
+        private static GameObject Inst(GameObject p, Transform parent) => (GameObject)PrefabUtility.InstantiatePrefab(p, parent);
+
+        /// <summary>Start line + start gate (lights) on the timing line, finish arch and covered finish canopy after it, grid slot marks.</summary>
+        private static void BuildArtStartFinish(TrackPath path, StartGrid grid, TrackMeshBuilder builder)
+        {
+            var root = new GameObject("StartFinish").transform;
+            root.SetParent(path.transform, false);
+            float d0 = path.StartLineDistance;
+            float w = path.GetWidth(d0);
+            Place("SM_Track_StartLine", root, path.GetPosition(d0) - path.GetTangent(d0) * 0.2f, path.GetRotation(d0), new Vector3(w / 4f, 1f, 1f));
+            Place("SM_Track_StartGate", root, path.GetPosition(d0), path.GetRotation(d0));
+            Place("SM_Track_FinishArch", root, path.GetPosition(d0 + FinishArchOffset), path.GetRotation(d0 + FinishArchOffset));
+            for (int i = 0; i < FinishCanopyModules; i++)
+            {
+                float d = d0 + FinishArchOffset + 2f + i * 4f;
+                Vector3 a = path.GetPosition(d), b = path.GetPosition(d + 4f);
+                Place("SM_Track_FinishCanopy_4m", root, a, Quaternion.LookRotation(b - a, path.GetUp(d)));
+            }
+            for (int i = 0; i < StartGrid.MaxSlots; i++)
+            {
+                var slot = grid.GetSlot(i, 0.004f);
+                Place("SM_Track_GridSlot", root, slot.position, slot.rotation);
+            }
+        }
+
+        /// <summary>Lap line + finish arch at the same spot, canopy behind them, start gate at the head of the grid (ARCHITECTURE).</summary>
+        private static void BuildArtStartFinishOnLine(TrackPath path, StartGrid grid)
+        {
+            var root = new GameObject("StartFinish").transform;
+            root.SetParent(path.transform, false);
+            float d0 = path.StartLineDistance;
+            float w = path.GetWidth(d0);
+            Place("SM_Track_FinishLine", root, path.GetPosition(d0) - path.GetTangent(d0) * 0.3f, path.GetRotation(d0), new Vector3(w / 5f, 1f, 1f));
+            Place("SM_Track_FinishArch", root, path.GetPosition(d0), path.GetRotation(d0));
+            float gate = d0 - grid.FirstRowOffset + GateAheadOfGrid;
+            Place("SM_Track_StartGate", root, path.GetPosition(gate), path.GetRotation(gate));
+            for (int i = 0; i < FinishCanopyModules; i++)
+            {
+                float d = d0 + 1.5f + i * 4f;
+                Vector3 a = path.GetPosition(d), b = path.GetPosition(d + 4f);
+                Place("SM_Track_FinishCanopy_4m", root, a, Quaternion.LookRotation(b - a, path.GetUp(d)));
+            }
+            for (int i = 0; i < StartGrid.MaxSlots; i++)
+            {
+                var slot = grid.GetSlot(i, 0.004f);
+                Place("SM_Track_GridSlot", root, slot.position, slot.rotation);
+            }
+        }
+
+        private const float GateAheadOfGrid = 3f;
+        private const float FinishArchOffset = 8f;
+        private const int FinishCanopyModules = 4;
+
+        /// <summary>Lift stations, cable posts and the cable itself (4 m modules following the spline).</summary>
+        private static void BuildArtLift(TrackPath path, TrackMeshBuilder builder, Transform parent)
+        {
+            if (!path.HasLift) return;
+            var root = new GameObject("LiftVisuals").transform;
+            root.SetParent(parent, false);
+            float s0 = path.LiftStart, s1 = path.LiftStart + path.LiftLength;
+            Place("SM_Track_Lift_StationBottom", root, path.GetPosition(s0), path.GetRotation(s0));
+            Place("SM_Track_Lift_StationTop", root, path.GetPosition(s1 - 6f), path.GetRotation(s1 - 6f));
+
+            // The cable runs beside the sled lane (right of the centre line) so it does not cut through the tubs.
+            for (float s = s0 + 3f; s + 4f <= s1 - 3f + 0.01f; s += 4f)
+            {
+                Vector3 a = CableLine(path, s), b = CableLine(path, s + 4f);
+                Place("SM_Track_Lift_Cable_4m", root, a, Quaternion.LookRotation(b - a, path.GetUp(s)));
+            }
+            for (float s = s0 + 6f; s <= s1 - 6f; s += 6f)
+                Place("SM_Track_Lift_CablePost", root, CableLine(path, s), path.GetRotation(s));
+
+            var rail = PrefabFactory.LoadTrack("SM_Track_Lift_RampRail_4m");
+            if (rail != null)
+            {
+                foreach (int side in new[] { -1, 1 })
+                {
+                    var placed = builder.PlaceAlong(rail, 4f, side, 0.05f, s0 + 6f, s1 - 6f, root, d => path.IsInLift(d), Inst);
+                    ToStartPivot(placed, 4f, side);
+                }
+            }
+        }
+
+        public const float CableLateral = 0.75f;
+
+        private static Vector3 CableLine(TrackPath path, float d) => path.GetPosition(d) + path.GetRight(d) * CableLateral;
+
+        /// <summary>Rails along both edges, catch nets on the outside of sharp curves (lift and gates excluded).</summary>
+        private static void BuildArtEdges(TrackPath path, TrackMeshBuilder builder, Transform parent, Options options)
+        {
+            var rail = PrefabFactory.LoadTrack("SM_Track_Rail_4m");
+            var net = PrefabFactory.LoadTrack("SM_Track_Net_4m");
+            if (rail == null) return;
+            var root = new GameObject("Guardrails").transform;
+            root.SetParent(parent, false);
+            float d0 = path.StartLineDistance;
+            var startGrid = path.GetComponentInChildren<StartGrid>();
+            float grid0FirstRow = startGrid != null ? startGrid.FirstRowOffset : 4f;
+            bool NearGates(float d)
+            {
+                float rel = path.SignedDelta(d0, d);
+                if (options.FinishArchOnLapLine)
+                {
+                    float gate = -grid0FirstRow + GateAheadOfGrid;
+                    return (rel > -2.5f && rel < 2.5f + FinishCanopyModules * 4f) || (rel > gate - 2.5f && rel < gate + 2.5f);
+                }
+                return (rel > -2.5f && rel < 2.5f) || (rel > FinishArchOffset - 2.5f && rel < FinishArchOffset + 2.5f);
+            }
+            System.Func<float, int, bool> allowed = options.EdgeFilter ?? ((d, s) => true);
+            foreach (int side in new[] { -1, 1 })
+            {
+                // Outer side of a right turn (k > 0) is the left edge.
+                System.Func<float, bool> outerSharp = d => side < 0 ? MaxCurvature(path, d) > options.NetCurvature : MinCurvature(path, d) < -options.NetCurvature;
+                if (net != null)
+                    ToStartPivot(builder.PlaceAlong(net, 4f, side, 0.15f, 0f, path.Length, root, d => !path.IsInLift(d) && !NearGates(d) && outerSharp(d) && allowed(d, side), Inst), 4f, side);
+                ToStartPivot(builder.PlaceAlong(rail, 4f, side, 0.15f, 0f, path.Length, root,
+                    d => !path.IsInLift(d) && !NearGates(d) && !(net != null && outerSharp(d)) && allowed(d, side), Inst), 4f, side);
+            }
+        }
+
+        /// <summary>Warning signs ~25 m before each corner entry on the right edge (Slow for hairpins).</summary>
+        private static void BuildArtSigns(TrackPath path, TrackMeshBuilder builder, Transform parent, Options options)
+        {
+            var root = new GameObject("Signs").transform;
+            root.SetParent(parent, false);
+            float straightRun = 0f;
+            float lastSign = -1000f;
+            for (float d = 0f; d < path.Length; d += 2f)
+            {
+                float k = path.GetCurvature(d);
+                if (Mathf.Abs(k) < 0.012f) { straightRun += 2f; continue; }
+                if (Mathf.Abs(k) > 0.03f && straightRun >= 20f && d - lastSign > 40f)
+                {
+                    float ds = d - 25f;
+                    if (!path.IsInLift(ds) && Mathf.Abs(path.SignedDelta(path.StartLineDistance, ds)) > 15f && (options.SignFilter == null || options.SignFilter(ds)))
+                    {
+                        float peak = 0f;
+                        for (float o = 0f; o < 30f; o += 2f) peak = Mathf.Max(peak, Mathf.Abs(path.GetCurvature(d + o)));
+                        string model = peak > 0.06f ? "SM_Track_Sign_Slow" : k > 0f ? "SM_Track_Sign_CurveRight" : "SM_Track_Sign_CurveLeft";
+                        float off = path.GetWidth(ds) * 0.5f + builder.CurbWidth + 1.1f;
+                        Vector3 pos = path.GetPosition(ds) + path.GetRight(ds) * off;
+                        Vector3 flatFwd = Vector3.ProjectOnPlane(path.GetTangent(ds), Vector3.up).normalized;
+                        Place(model, root, pos, Quaternion.LookRotation(flatFwd, Vector3.up));
+                        lastSign = d;
+                    }
+                }
+                straightRun = 0f;
+            }
+        }
+
 
         private static float MaxCurvature(TrackPath p, float d) => Mathf.Max(p.GetCurvature(d - 3f), p.GetCurvature(d), p.GetCurvature(d + 3f));
         private static float MinCurvature(TrackPath p, float d) => Mathf.Min(p.GetCurvature(d - 3f), p.GetCurvature(d), p.GetCurvature(d + 3f));

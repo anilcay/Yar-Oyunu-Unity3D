@@ -51,6 +51,8 @@ namespace LugeRush.AI
         private float pushAt = -1f;
         private float stuckTimer;
         private bool driftThisCorner;
+        private bool goForSuper;
+        private float cornerSign;
         private bool inCorner;
         private System.Random rng;
 
@@ -177,18 +179,39 @@ namespace LugeRush.AI
             float brake = v > vt + 0.3f ? Mathf.Clamp01((v - vt) / 2.5f) : 0f;
 
             // --- Drift decision per corner ---
-            float kAhead = Mathf.Abs(SampleArray(curvature, d + look));
-            if (!inCorner && kAhead > 0.04f)
+            float kSigned = SampleArray(curvature, d + look);
+            float kAhead = Mathf.Abs(kSigned);
+            if (!inCorner && kAhead > Difficulty.DriftCurvature)
             {
                 inCorner = true;
+                cornerSign = Mathf.Sign(kSigned);
                 driftThisCorner = rng.NextDouble() < Difficulty.DriftUsage;
+                goForSuper = driftThisCorner && rng.NextDouble() < Difficulty.SuperDriftUsage;
             }
-            else if (inCorner && kAhead < 0.015f)
+            else if (inCorner && kAhead < Difficulty.DriftCurvature * 0.4f)
             {
                 inCorner = false;
                 driftThisCorner = false;
             }
-            bool drift = driftThisCorner && Mathf.Abs(input.Steer) > 0.55f && v > stats.DriftMinSpeed + 1f;
+            bool drift;
+            if (sled.IsDrifting)
+            {
+                // Hold the drift through the corner until the wanted boost level is charged.
+                int wantLevel = goForSuper ? 2 : 1;
+                bool charged = sled.DriftLevel >= wantLevel;
+                float kNear = SampleArray(curvature, d + 2f);
+                bool cornerGoesOn = inCorner && Mathf.Sign(kNear) == cornerSign && Mathf.Abs(kNear) > Difficulty.DriftCurvature * 0.3f;
+                float insideRoom = Track.GetWidth(d) * 0.5f - cornerSign * follower.Lateral;
+                drift = driftThisCorner && !charged && cornerGoesOn && insideRoom > edgeMargin && v > stats.DriftMinSpeed;
+                // The controller drops the drift below |steer| 0.4: keep a little steer into the corner while holding.
+                if (drift && Mathf.Sign(input.Steer) == cornerSign && Mathf.Abs(input.Steer) < 0.45f)
+                    input.Steer = cornerSign * 0.45f;
+            }
+            else
+            {
+                // Start only once braking for the corner is done (drifting scrubs brake force).
+                drift = driftThisCorner && Mathf.Abs(input.Steer) > 0.5f && v > stats.DriftMinSpeed + 1f && brake < 0.3f;
+            }
             input.Drift = drift;
             // Avoid accidental brake-drifts while turning unless drifting on purpose.
             if (!drift && Mathf.Abs(input.Steer) > 0.4f) brake = Mathf.Min(brake, 0.45f);

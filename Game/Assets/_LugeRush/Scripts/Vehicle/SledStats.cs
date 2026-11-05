@@ -77,7 +77,11 @@ namespace LugeRush.Vehicle
         [Tooltip("Fraction of air drag removed while in slipstream.")]
         public float SlipstreamDragReduction = 0.45f;
         [Tooltip("Seconds in slipstream to fill the meter.")]
-        public float SlipstreamChargeTime = 1.6f;
+        public float SlipstreamChargeTime = 3f;
+        [Tooltip("Meter drain speed outside the slipstream, relative to the fill rate.")]
+        public float SlipstreamDecayRate = 1f;
+        [Tooltip("Seconds after a slipstream boost before the meter can fill again (drag reduction still applies).")]
+        public float SlipstreamCooldown = 10f;
         public float SlipstreamBoostForce = 3f;
         public float SlipstreamBoostDuration = 0.8f;
 
