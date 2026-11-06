@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d382655db5172704ebb402dc22110c8e, type: 3}
+  m_Name: LugeRushAudio
+  m_EditorClassIdentifier: LugeRush.Runtime::LugeRush.Audio.AudioLibrary
+  Mixer: {fileID: 24100000, guid: bd0041ae582d20d4a8297ad980e43d8b, type: 2}
+  MusicGroup: {fileID: 24300004, guid: bd0041ae582d20d4a8297ad980e43d8b, type: 2}
+  SfxGroup: {fileID: 24300006, guid: bd0041ae582d20d4a8297ad980e43d8b, type: 2}
+  UiGroup: {fileID: 24300008, guid: bd0041ae582d20d4a8297ad980e43d8b, type: 2}
+  SledRoll: {fileID: 8300000, guid: fe38940cbf168ff4ab30ef8c29d27dc8, type: 3}
+  SledWind: {fileID: 8300000, guid: 8dc340be3be531b4fbfd247577fbc6b8, type: 3}
+  SledBrake: {fileID: 8300000, guid: c97191ce5b02fac4aa324c458f1bbb5d, type: 3}
+  SledDrift: {fileID: 8300000, guid: 7dd20206c80f25d4fa8e396a85f24141, type: 3}
+  SledScrape: {fileID: 8300000, guid: e6f31fcf96ac2d942956231f21f1ff13, type: 3}
+  SledBoost: {fileID: 8300000, guid: a98d07d9929c505489cb8cec3820d222, type: 3}
+  SledImpacts:
+  - {fileID: 8300000, guid: c6b081a3dcf8b2e4d97a9d760fe29bd4, type: 3}
+  - {fileID: 8300000, guid: e02c103d7de2d2944858e73cd632c754, type: 3}
+  - {fileID: 8300000, guid: 62cb682b70ca27e44b09e92e9ee75e70, type: 3}
+  LiftChain: {fileID: 8300000, guid: 666675ac16c4d354a849fca2ff06f614, type: 3}
+  RaceBeep: {fileID: 8300000, guid: dc462b9d736d2274087d2de4b07eb14a, type: 3}
+  RaceGo: {fileID: 8300000, guid: 0db048577b505f24084d12653be2feb8, type: 3}
+  LapComplete: {fileID: 8300000, guid: 72a1b9a7d8bed6741ad7d359845a7fb2, type: 3}
+  LapFinal: {fileID: 8300000, guid: 783badb8441e1e84eb6d303dc04c476a, type: 3}
+  RaceFinish: {fileID: 8300000, guid: d3cdcb73e5e38fc428bdcfb4f054713b, type: 3}
+  AmbForest: {fileID: 8300000, guid: 1caca53d41d60b14e9976c540434500f, type: 3}
+  AmbAlpine: {fileID: 8300000, guid: b2de3248fd3112b419f408dde0937557, type: 3}
+  AmbCanyon: {fileID: 8300000, guid: a2787967e41c6be4c8dd77c97301d265, type: 3}
+  MusicMenu: {fileID: 8300000, guid: 4f97ec47c7fee5842bbcabc2f385d0e5, type: 3}
+  MusicRace: {fileID: 8300000, guid: 4fdfc98c906899f4ab05a044ee3e3c58, type: 3}
+  UiNav: {fileID: 8300000, guid: 1ec7aa335d63e6c4cbc1ec3454b0f15d, type: 3}
+  UiConfirm: {fileID: 8300000, guid: 3755d15ed06e04044af8251edf4297ef, type: 3}
+  UiBack: {fileID: 8300000, guid: 1e4d94073e7e3674dadf6e04e3482cb0, type: 3}
+  UiNotify: {fileID: 8300000, guid: 0424a80f71aa6b740a11abb170d59369, type: 3}

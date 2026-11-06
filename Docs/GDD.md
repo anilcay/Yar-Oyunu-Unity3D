@@ -58,7 +58,7 @@ Videodaki tarza sadık, her biri 4 renk seçeneği (turuncu, kırmızı, sarı, 
 | 2 | **Çam Zirvesi** | Alp dağı | Çam ormanı, granit kayalar, şelale ve dere, uçurum kenarı panoramik viraj, kaya tüneli, ahşap dağ evi | Sabah, berrak gökyüzü, uzak karlı zirveler |
 | 3 | **Kızıl Kanyon** | Çöl kanyonu | Kızıl kaya kuleleri (mesa), kaktüs, kuru çalı, kanyon içi dar geçit, doğal kaya kemeri, terk edilmiş maden rayları | Gün batımı, turuncu-mor gökyüzü, uzun gölgeler |
 
-Her pist: ~1.2–1.8 km iniş + ~150 m lift. Tur süresi hedefi 60–90 sn. Her pistte en az: 1 uzun düzlük (slipstream), 1 saç tokası viraj, 1 S-viraj, 1 eğimli (banked) geniş viraj, 1 kısa tünel/kapalı bölüm, 1 kısayol (riskli).
+Her pist: ~1.2–1.8 km iniş + ~150 m lift. Tur süresi hedefi 60–90 sn. Her pistte en az: 1 uzun düzlük (slipstream), 1 saç tokası viraj, 1 S-viraj, 1 eğimli (banked) geniş viraj, 1 kısa tünel/kapalı bölüm. Kısayol ilk sürüm kapsamından çıkarıldı (tek hatlı AI ve reset sistemiyle uyumsuz).
 
 ## 6. Modlar ve akış
 ```

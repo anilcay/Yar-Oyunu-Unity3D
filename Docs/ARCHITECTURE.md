@@ -126,6 +126,10 @@ Rider iskeleti Humanoid uyumludur; `Hand.L`/`Hand.R` gidon tutma noktasına IK h
 - **Lift:** hız 18 m/s kalır (görsel inandırıcılık). GDD'deki ~6 sn hedefi lift **uzunluğu** ile sağlanır: gerçek haritalarda lift ≤ 110 m.
 - **HUD metni:** TextMeshPro kullanılır (TMP Essentials `Assets/TextMesh Pro` altına UI yazılımcısı tarafından kurulur); `DebugRaceHud` geçicidir.
 
+## Ses (Yönetici)
+- Namespace `LugeRush.Audio`. `GameAudio` kendi kendini kuran kalıcı nesnedir; `SledAudio` kızaklara çalışma anında eklenir, prefab değişikliği gerekmez. Tek ve çok oyunculu aynı yoldan gider.
+- Yeniden üretim: önce `python Art/Scripts/audio_build.py`, sonra `LugeRush.Editor.AudioAssetBuilder.Build`. WAV'lar Git LFS ile depoda tutulur.
+
 ## Ağ fazı kararları (Yönetici)
 - **NetworkSled:** `Prefabs/Network/NetworkSled.prefab` yalnız NetworkObject + owner-auth NetworkTransform + `NetworkSled` taşır. Her peer ağsız oyun kızağını `SledCatalog.GetPrefab(tip)` ile ayrı obje olarak kurar; sanat prefab'larına NetworkObject eklenmez.
 - **Yetki:** `NetworkRaceAuthority` hostta; tek oyunculu mod da aynı yoldan (loopback yerel host) gider.
