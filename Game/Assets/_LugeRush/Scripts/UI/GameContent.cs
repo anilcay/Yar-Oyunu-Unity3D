@@ -29,6 +29,8 @@ namespace LugeRush.UI
         [Tooltip("Indexed by BotDifficulty (Easy, Normal, Hard).")]
         public AIDifficulty[] Difficulties = new AIDifficulty[3];
         public AIDifficulty AutopilotDifficulty;
+        [Tooltip("SM_Track_Lift_Hook prefab shown between the cable and a sled on the lift.")]
+        public GameObject LiftHookPrefab;
 
         [Header("Scenes")]
         public string BootScene = "Boot";

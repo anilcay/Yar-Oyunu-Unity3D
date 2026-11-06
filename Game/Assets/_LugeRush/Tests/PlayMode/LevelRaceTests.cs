@@ -19,6 +19,8 @@ namespace LugeRush.Tests
         private const float SimTimeout = 480f;
         private const float StuckWindow = 25f;
         private const float MinLap = 60f, MaxLap = 100f;
+        // Lap 1 starts from rest in an eight sled pack: measured 7-19 s slower than lap 2 on the same map.
+        private const float MaxFirstLap = 110f;
 
         [UnityTest, Timeout(900000)]
         public IEnumerator Race_TwoLaps_NormalBots(
@@ -41,11 +43,11 @@ namespace LugeRush.Tests
 
             Time.timeScale = TimeScale;
             float t0 = Time.time;
+            var monitor = SpeedSpikeMonitor.Create();
             var lastProgress = new Dictionary<RaceParticipant, float>();
             var lastProgressTime = new Dictionary<RaceParticipant, float>();
             var stuck = new HashSet<RaceParticipant>();
             var maxSpeed = new Dictionary<RaceParticipant, float>();
-            var spikes = new HashSet<RaceParticipant>();
 
             while (rm.State != RaceState.Finished && Time.time - t0 < SimTimeout)
             {
@@ -54,8 +56,6 @@ namespace LugeRush.Tests
                     foreach (var p in rm.Participants)
                     {
                         maxSpeed[p] = Mathf.Max(maxSpeed.TryGetValue(p, out float ms) ? ms : 0f, p.Controller.SpeedKmh);
-                        if (p.Controller.SpeedKmh > 115f && spikes.Add(p))
-                            Debug.Log($"[LevelRace] speed spike {p.DisplayName}: {p.Controller.SpeedKmh:0} km/h at d={p.Follower.Distance:0} lateral={p.Follower.Lateral:0.0} height={p.Follower.Height:0.0} lift={track.LiftStart:0}-{track.LiftEnd:0} start={track.StartLineDistance:0}");
                         if (p.Finished) continue;
                         if (!lastProgress.TryGetValue(p, out float best) || p.RaceDistance > best + 5f)
                         {
@@ -80,16 +80,21 @@ namespace LugeRush.Tests
                 string stats = p.Controller != null && p.Controller.Stats != null ? p.Controller.Stats.Type.ToString() : "?";
                 sb.AppendLine($"  P{p.Position} {p.DisplayName,-8} {stats,-8} finished={p.Finished} total={p.TotalTime:0.0}s laps=[{laps}] resets={p.ResetCount} dist={p.RaceDistance:0} vmax={(maxSpeed.TryGetValue(p, out float vm) ? vm : 0f):0}km/h");
             }
+            sb.AppendLine("[LevelRace] " + monitor.Report());
             Debug.Log(sb.ToString());
             TestContext.WriteLine(sb.ToString());
 
+            Assert.IsEmpty(monitor.Spikes, "Sudden speed jumps: " + monitor.Report());
             int finished = rm.Participants.Count(p => p.Finished);
             Assert.AreEqual(RaceState.Finished, rm.State, "Race did not finish within the simulated time limit");
             Assert.GreaterOrEqual(finished, 6, $"Only {finished}/8 sleds finished");
             Assert.IsEmpty(stuck.Select(p => p.DisplayName).ToList(), "Sleds made no progress for too long (stuck)");
             foreach (var p in rm.Participants.Where(p => p.Finished))
-                foreach (var lap in p.LapTimes)
-                    Assert.That(lap, Is.InRange(MinLap, MaxLap), $"{p.DisplayName} lap time {lap:0.0}s outside {MinLap}-{MaxLap}s");
+                for (int i = 0; i < p.LapTimes.Count; i++)
+                {
+                    float max = i == 0 ? MaxFirstLap : MaxLap;
+                    Assert.That(p.LapTimes[i], Is.InRange(MinLap, max), $"{p.DisplayName} lap {i + 1} time {p.LapTimes[i]:0.0}s outside {MinLap}-{max}s");
+                }
         }
 
         [SetUp]

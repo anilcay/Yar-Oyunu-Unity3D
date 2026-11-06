@@ -581,6 +581,11 @@ namespace LugeRush.UI
 
         /// <summary>Automation / screenshots.</summary>
         public bool ResultsVisible => resultsPanel != null && resultsPanel.activeSelf;
+        public Button PauseResumeButton => pauseResume;
+        public Button PauseRestartButton => pauseRestart;
+        public Button PauseExitButton => pauseExit;
+        public Button ResultsRematchButton => resultsRematch;
+        public Button ResultsExitButton => resultsExit;
     }
 
     /// <summary>Keeps the minimap's dark outline in sync with the track line (set once by RaceHud).</summary>

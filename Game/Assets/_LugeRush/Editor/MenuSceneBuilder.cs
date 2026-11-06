@@ -88,6 +88,7 @@ namespace LugeRush.Editor
                 SledAssetFactory.LoadDifficulty(BotDifficulty.Hard),
             };
             content.AutopilotDifficulty = content.Difficulties[1];
+            content.LiftHookPrefab = PrefabFactory.LoadTrack("SM_Track_Lift_Hook");
             EditorUtility.SetDirty(content);
             if (content.BodyFont == null) Debug.LogWarning("[MenuSceneBuilder] UI fonts missing: run UIFontBuilder.BuildFonts.");
             if (content.Sleds == null || content.SledPrefab == null) Debug.LogWarning("[MenuSceneBuilder] Sled catalog/prefab missing.");
@@ -226,6 +227,16 @@ namespace LugeRush.Editor
         }
 
         /// <summary>Boot, MainMenu, then every track scene that exists (order of the catalog, then the rest).</summary>
+        /// <summary>Batch: points GameContent at the lift hook prefab without rebuilding the menus.</summary>
+        public static void AssignLiftHook()
+        {
+            var content = AssetDatabase.LoadAssetAtPath<GameContent>(ContentPath);
+            content.LiftHookPrefab = PrefabFactory.LoadTrack("SM_Track_Lift_Hook");
+            EditorUtility.SetDirty(content);
+            AssetDatabase.SaveAssets();
+            Debug.Log($"[MenuSceneBuilder] LiftHookPrefab = {content.LiftHookPrefab}");
+        }
+
         public static void ApplyBuildOrder()
         {
             var list = new List<EditorBuildSettingsScene>

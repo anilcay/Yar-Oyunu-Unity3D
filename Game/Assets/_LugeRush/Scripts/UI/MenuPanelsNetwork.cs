@@ -21,6 +21,7 @@ namespace LugeRush.UI
         private RectTransform roomList;
         private readonly List<Button> roomButtons = new List<Button>();
         private bool querying;
+        private int navigationMask = -1;
 
         protected override void Build(RectTransform c)
         {
@@ -95,6 +96,21 @@ namespace LugeRush.UI
             UIFactory.SetInteractable(joinIp, !busy);
             UIFactory.SetInteractable(hostIp, !busy);
             if (!ready) roomsInfo.text = "Hızlı katıl: çevrimiçi servis gerekli";
+            ChainNavigation();
+        }
+
+        /// <summary>Keyboard/gamepad order over everything usable right now (disabled items must be skipped explicitly).</summary>
+        private void ChainNavigation()
+        {
+            var all = new List<Selectable> { host, codeInput, joinCode, refresh };
+            all.AddRange(roomButtons);
+            all.AddRange(new Selectable[] { ipInput, joinIp, hostIp, back });
+            int mask = 0;
+            for (int i = 0; i < all.Count; i++)
+                if (all[i].gameObject.activeSelf && all[i].interactable) mask |= 1 << i;
+            if (mask == navigationMask) return;
+            navigationMask = mask;
+            UIFactory.ChainVertical(all.FindAll(s => s.interactable).ToArray());
         }
 
         private async void HostOnline()

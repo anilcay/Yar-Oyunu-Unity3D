@@ -41,6 +41,11 @@ namespace LugeRush.Track
 
         private void Awake()
         {
+            if (!SystemInfo.supportsInstancing) // headless / -nographics: RenderMeshInstanced would throw every frame
+            {
+                enabled = false;
+                return;
+            }
             if (Data == null) return;
             foreach (var g in Data.Groups)
             {

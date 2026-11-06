@@ -34,6 +34,9 @@ namespace LugeRush.AI
         [SerializeField] private float stuckSpeed = 0.8f;
         [SerializeField] private float stuckTime = 2.5f;
 
+        /// <summary>Fixed random seed for reproducible measurements (null = every bot differs per run).</summary>
+        public static int? SeedOverride;
+
         /// <summary>Metres this sled is ahead (+) / behind (-) the rubber band reference (usually the player).</summary>
         public Func<float> GapProvider;
         /// <summary>Per-bot skill variation, e.g. -0.03..0.03 (applied to corner speed).</summary>
@@ -47,6 +50,7 @@ namespace LugeRush.AI
         private float step;
         private float avoidOffset;
         private float wanderPhase;
+        private float wanderClock;
         private bool wasLocked = true;
         private float pushAt = -1f;
         private float stuckTimer;
@@ -64,7 +68,7 @@ namespace LugeRush.AI
             sled = GetComponent<SledController>();
             follower = GetComponent<TrackFollower>();
             if (Track == null) Track = FindFirstObjectByType<TrackPath>();
-            rng = new System.Random(GetInstanceID());
+            rng = new System.Random(SeedOverride ?? GetInstanceID());
             wanderPhase = (float)rng.NextDouble() * 100f;
         }
 
@@ -164,7 +168,8 @@ namespace LugeRush.AI
             float look = Mathf.Max(Difficulty.LookAheadMin, v * Difficulty.LookAheadTime);
             float dl = d + look;
             float half = Track.GetWidth(dl) * 0.5f - edgeMargin * 0.6f;
-            float wander = Mathf.Sin(Time.time * 0.4f + wanderPhase) * Difficulty.LineWander;
+            wanderClock += dt;
+            float wander = Mathf.Sin(wanderClock * 0.4f + wanderPhase) * Difficulty.LineWander;
             float offset = Mathf.Clamp(SampleArray(lineOffset, dl) + avoidOffset + wander, -half, half);
             Vector3 target = Track.GetPosition(dl) + Track.GetRight(dl) * offset;
             Vector3 local = transform.InverseTransformPoint(target);

@@ -30,6 +30,8 @@ namespace LugeRush.Vehicle
         [Tooltip("Minimum relative speed for a collision to raise Bumped.")]
         [SerializeField] private float bumpEventMinSpeed = 1.5f;
 
+        private const float LiftExitGhostTime = 0.6f;
+
         private Rigidbody rb;
         private bool frozen;
         private bool grounded;
@@ -41,6 +43,7 @@ namespace LugeRush.Vehicle
         private float boostTimer;
         private float boostAccel;
         private float startPenaltyTimer;
+        private float liftExitGhost;
         private readonly Vector3[] probeOffsets = new Vector3[4];
 
         public ISledInputSource InputSource { get; set; }
@@ -146,6 +149,12 @@ namespace LugeRush.Vehicle
             var raw = InputSource != null ? InputSource.ReadInput() : SledInput.None;
             LastInput = raw;
             if (raw.Push) PushPressed?.Invoke();
+
+            if (liftExitGhost > 0f)
+            {
+                liftExitGhost -= Time.fixedDeltaTime;
+                if (liftExitGhost <= 0f) rb.excludeLayers = 0;
+            }
 
             if (frozen || IsOnLift || Stats == null) return;
 
@@ -409,6 +418,9 @@ namespace LugeRush.Vehicle
             boostTimer = 0f;
             slipCharge = 0f;
             ApplyKinematicState();
+            // A kinematic rider sweeping through a sled would launch it: lift riders never touch other sleds.
+            liftExitGhost = 0f;
+            rb.excludeLayers = 1 << gameObject.layer;
         }
 
         /// <summary>Called by the lift every FixedUpdate while attached.</summary>
@@ -425,6 +437,7 @@ namespace LugeRush.Vehicle
             IsOnLift = false;
             ApplyKinematicState();
             SetVelocity(releaseVelocity);
+            liftExitGhost = LiftExitGhostTime; // the next rider is released about one sled length behind this one
         }
 
         private void ApplyKinematicState()

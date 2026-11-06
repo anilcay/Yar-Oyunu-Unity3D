@@ -81,7 +81,9 @@ namespace LugeRush.Tests
             Time.timeScale = 1f;
 
             var sb = new StringBuilder();
-            sb.AppendLine($"[GreyboxRace] difficulty={difficulty} state={rm.State} simTime={Time.time - t0:0.0}s trackLength={track.Length:0}m lift={track.LiftLength:0}m");
+            var finishers = rm.Participants.Where(p => p.Finished).Select(p => p.TotalTime).ToList();
+            float spread = finishers.Count > 1 ? finishers.Max() - finishers.Min() : 0f;
+            sb.AppendLine($"[GreyboxRace] difficulty={difficulty} state={rm.State} simTime={Time.time - t0:0.0}s trackLength={track.Length:0}m lift={track.LiftLength:0}m finishSpread={spread:0.0}s ({100f * spread / Mathf.Max(1f, finishers.DefaultIfEmpty(1f).Min()):0.0}%)");
             foreach (var p in rm.Standings)
             {
                 var laps = string.Join(", ", p.LapTimes.Select(l => l.ToString("0.0")));
@@ -93,7 +95,7 @@ namespace LugeRush.Tests
 
             int finished = rm.Participants.Count(p => p.Finished);
             Assert.AreEqual(RaceState.Finished, rm.State, "Race did not finish within the simulated time limit");
-            Assert.GreaterOrEqual(finished, 6, $"Only {finished}/8 sleds finished");
+            Assert.AreEqual(8, finished, $"Only {finished}/8 sleds finished inside the grace period");
             Assert.IsEmpty(stuck.Select(p => p.DisplayName).ToList(), "Sleds made no progress for too long (stuck)");
             foreach (var p in rm.Participants.Where(p => p.Finished))
                 foreach (var lap in p.LapTimes)

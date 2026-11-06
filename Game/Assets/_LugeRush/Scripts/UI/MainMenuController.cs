@@ -160,6 +160,7 @@ namespace LugeRush.UI
 
         public void Back()
         {
+            LugeRush.Audio.GameAudio.PlayUi(LugeRush.Audio.UiSound.Back);
             if (history.Count == 0) { ShowRoot(); return; }
             var prev = history.Pop();
             if (current != null)
@@ -230,6 +231,7 @@ namespace LugeRush.UI
             toastText.text = message;
             toast.gameObject.SetActive(true);
             toastHide = Time.unscaledTime + 5f;
+            LugeRush.Audio.GameAudio.PlayUi(LugeRush.Audio.UiSound.Notify);
         }
 
         // ------------------------------------------------------------------ Actions

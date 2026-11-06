@@ -18,6 +18,7 @@ namespace LugeRush.Network
     /// -lr-race-timeout S           (automation) give up after S seconds in the race scene
     /// -lr-offline                  do not initialise Unity Gaming Services
     /// -lr-screenshots DIR          capture ui_*.png screenshots during the automated run
+    /// -lr-flow                     also exercise pause, restart, rematch, back to lobby / menu
     /// </code>
     /// </summary>
     public static class LaunchArgs
@@ -39,6 +40,8 @@ namespace LugeRush.Network
         public static float RaceTimeout { get; private set; } = 360f;
         public static bool Offline { get; private set; }
         public static string ScreenshotDir { get; private set; }
+        /// <summary>Automation also walks the pause, rematch and exit flows and logs "[LR] AUTO FLOW" results.</summary>
+        public static bool Flow { get; private set; }
 
         public static bool IsAutomation => AutoHost || !string.IsNullOrEmpty(AutoJoin) || AutoSingle;
 
@@ -72,6 +75,7 @@ namespace LugeRush.Network
                     case "-lr-race-timeout": RaceTimeout = ParseInt(next, (int)RaceTimeout); i++; break;
                     case "-lr-offline": Offline = true; break;
                     case "-lr-screenshots": ScreenshotDir = next; i++; break;
+                    case "-lr-flow": Flow = true; break;
                 }
             }
             if (IsAutomation) Autopilot = true;

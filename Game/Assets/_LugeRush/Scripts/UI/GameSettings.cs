@@ -74,7 +74,7 @@ namespace LugeRush.UI
         // Last menu choices
         public SledType Sled = SledType.Classic;
         public SledColor Color = SledColor.Orange;
-        public string TrackId = "dev_greybox";
+        public string TrackId = "forest";
         public int Laps = 3;
         public int Bots = 7;
         public BotDifficulty Difficulty = BotDifficulty.Normal;
@@ -172,7 +172,7 @@ namespace LugeRush.UI
             Bots = Mathf.Clamp(Bots, 0, RaceConfig.MaxSleds - 1);
             if (ResolutionWidth < 0 || ResolutionHeight < 0) ResolutionWidth = ResolutionHeight = 0;
             if (QualityLevel < -1) QualityLevel = -1;
-            if (string.IsNullOrEmpty(TrackId)) TrackId = "dev_greybox";
+            if (string.IsNullOrEmpty(TrackId)) TrackId = "forest";
         }
 
         public GameSettings Clone() => (GameSettings)MemberwiseClone();
@@ -180,7 +180,7 @@ namespace LugeRush.UI
         /// <summary>Pushes graphics and audio options to the engine (skipped in batch mode for graphics).</summary>
         public void Apply()
         {
-            AudioListener.volume = MasterVolume;
+            LugeRush.Audio.GameAudio.ApplyVolumes(this);
             if (Application.isBatchMode) return;
             if (QualityLevel >= 0 && QualityLevel < QualitySettings.names.Length && QualitySettings.GetQualityLevel() != QualityLevel)
                 QualitySettings.SetQualityLevel(QualityLevel, true);

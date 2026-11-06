@@ -168,6 +168,7 @@ namespace LugeRush.UI
             var text = Text(img.transform, label, fontSize, UIStyle.Text, TextAlignmentOptions.Center, false, "Label");
             text.fontStyle = FontStyles.Bold;
             Stretch(text.rectTransform, 16, 0, 16, 0);
+            btn.onClick.AddListener(() => LugeRush.Audio.GameAudio.PlayUi(LugeRush.Audio.UiSound.Confirm));
             if (onClick != null) btn.onClick.AddListener(() => onClick());
             Layout(btn, -1, height);
             return btn;
@@ -189,6 +190,7 @@ namespace LugeRush.UI
             img.pixelsPerUnitMultiplier = 1.4f;
             var st = img.gameObject.AddComponent<UIStepper>();
             st.targetGraphic = img;
+            st.Changed += _ => LugeRush.Audio.GameAudio.PlayUi(LugeRush.Audio.UiSound.Nav);
             st.colors = Colors(UIStyle.Row, new Color(0.24f, 0.30f, 0.42f, 1f), UIStyle.AccentDark);
 
             st.Label = Text(img.transform, label, UIStyle.BodySize, UIStyle.TextMuted, TextAlignmentOptions.MidlineLeft, false, "Label");

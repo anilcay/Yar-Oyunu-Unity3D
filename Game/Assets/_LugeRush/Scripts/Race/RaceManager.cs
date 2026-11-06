@@ -25,8 +25,10 @@ namespace LugeRush.Race
         [Tooltip("Delay before the countdown begins.")]
         public float PreCountdownDelay = 1f;
         public int CountdownFrom = 3;
-        [Tooltip("After the first finisher, the others have this long to finish.")]
+        [Tooltip("After the first finisher, the others have at least this long to finish.")]
         public float FinishGraceSeconds = 20f;
+        [Tooltip("Grace also grows with the race: this fraction of the winner's time (a fixed window ends long races early).")]
+        public float FinishGraceFraction = 0.2f;
 
         [Header("Start push timing (seconds relative to GO)")]
         public float PushEarlyLimit = -0.25f;
@@ -93,6 +95,7 @@ namespace LugeRush.Race
         {
             Authority.Bind(this);
             Track.EnsureBuilt();
+            StartGateLights.Attach(this);
             if (DeferParticipantSetup) return;
             var found = new List<RaceParticipant>();
             foreach (var p in FindObjectsByType<RaceParticipant>(FindObjectsSortMode.None))
@@ -342,7 +345,7 @@ namespace LugeRush.Race
             p.Finished = true;
             p.TotalTime = totalTime;
             p.FinishOrder = ++finishCount;
-            if (finishCount == 1) graceDeadline = Time.time + FinishGraceSeconds;
+            if (finishCount == 1) graceDeadline = Time.time + Mathf.Max(FinishGraceSeconds, totalTime * FinishGraceFraction);
             UpdateStandings();
             ParticipantFinished?.Invoke(p);
         }

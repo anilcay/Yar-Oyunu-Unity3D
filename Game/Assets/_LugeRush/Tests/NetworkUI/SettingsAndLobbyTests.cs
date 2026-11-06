@@ -20,6 +20,7 @@ namespace LugeRush.Tests
             Assert.AreEqual(SledType.Classic, s.Sled);
             Assert.AreEqual(GameLanguage.Turkish, s.Language);
             Assert.IsTrue(s.Fullscreen);
+            Assert.AreEqual("forest", s.TrackId);
         }
 
         [Test]

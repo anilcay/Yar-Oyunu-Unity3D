@@ -145,6 +145,14 @@ Rider iskeleti Humanoid uyumludur; `Hand.L`/`Hand.R` gidon tutma noktasına IK h
 - **Lift uzunluğu:** Hedef ≤ 110 m (~6 s). Pistin iniş yüksekliği bunu aşmayı gerektirirse en çok 150 m (~8 s) olabilir.
 - **Lift makarası:** Makara ve kablo hizası şerit merkezinden +0.75 m. Alt istasyon plakası şeritten çıkarılır; collider'lar bundan sonra eklenir.
 
+## Cilalama fazı kararları (Yönetici)
+- **Lift girişi:** Kızak geri ışınlanmaz; olduğu yerden yakalanır, hız/yanal konum/yön yumuşak oturur. Lift binicileri liftte ve çıkıştan sonra 0.6 s diğer kızaklarla çarpışmaz (`excludeLayers`).
+- **Lift kancası:** `GameContent.LiftHookPrefab`, bindirici başına havuzdan gelir. Yalnız yerelde sürülen kızaklarda görünür.
+- **Başlangıç lambaları:** `StartGateLights` geri sayımda 1-2-3 kırmızı, GO'da yalnız yeşil yakar.
+- **Bitiş süresi:** `RaceManager.FinishGraceFraction`: `max(20 s, kazanan süresinin %20'si)`.
+- **Test otomasyonu:** `-lr-flow` duraklatma, yeniden başlatma, tekrar ve menü dönüşlerini player'da gezer. `AIDriver.SeedOverride` testlerde AI gürültüsünü sabitler.
+- **Grafik:** Windows birincil API D3D11, yedek D3D12. Gölge kademesi 2, yumuşak gölge Medium, SSAO yarım çözünürlük. Ekran 60 Hz'e kilitliyken %1-low hedefi henüz doğrulanmadı.
+
 ## Sanat varlığı entegrasyon kararları (Yönetici)
 - Kızak ek boşlukları: `Grip2.L`/`Grip2.R` (yalnız Tandem, arka yolcu tutamağı), `Wheels_Mid` (Tandem orta destek tekerlekleri, dönmez). Kızak gövdesi `Body` alt nesnesi `LR_Palette_Tint` materyali kullanır; renk `_BaseColor` ile verilir.
 - Pist kenar modülleri (bordür/korkuluk/file) dış tarafı modelde **+X**. Sağ kenarda olduğu gibi, **sol kenarda Y ekseninde 180° döndürülerek** yerleştirilir (negatif ölçek KULLANILMAZ — normal/collider bozulur).

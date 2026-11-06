@@ -5,6 +5,10 @@
         "LugeRush.Runtime",
         "Unity.Splines",
         "Unity.Mathematics",
+        "Unity.InputSystem",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "Unity.Netcode.Runtime",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

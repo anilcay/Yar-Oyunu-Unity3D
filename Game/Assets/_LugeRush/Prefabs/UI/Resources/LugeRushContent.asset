@@ -23,5 +23,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 052f0f39f55cc3a49abaab970eebb10f, type: 2}
   - {fileID: 11400000, guid: 99761d8d7cb21184c9d0681696bf1a47, type: 2}
   AutopilotDifficulty: {fileID: 11400000, guid: 052f0f39f55cc3a49abaab970eebb10f, type: 2}
+  LiftHookPrefab: {fileID: 4275476444788878787, guid: bd658784381ff7843a7a755852828fdc, type: 3}
   BootScene: Boot
   MainMenuScene: MainMenu
