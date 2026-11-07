@@ -48,6 +48,9 @@ namespace LugeRush.CameraSystem
 
         public bool IsFirstPerson { get; private set; }
 
+        /// <summary>Sets the view without player input (recording runs).</summary>
+        public void SetFirstPerson(bool value) => IsFirstPerson = value;
+
         private RaceParticipant participant;
         private CinemachineFollow thirdFollow;
         private CinemachineBasicMultiChannelPerlin thirdNoise, firstNoise;

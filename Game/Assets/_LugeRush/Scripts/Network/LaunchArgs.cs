@@ -19,6 +19,11 @@ namespace LugeRush.Network
     /// -lr-offline                  do not initialise Unity Gaming Services
     /// -lr-screenshots DIR          capture ui_*.png screenshots during the automated run
     /// -lr-flow                     also exercise pause, restart, rematch, back to lobby / menu
+    /// -lr-record DIR               write numbered JPG frames at a fixed frame rate, then quit
+    /// -lr-record-from S            race time to start at (negative: from the countdown)
+    /// -lr-record-secs S            clip length in seconds
+    /// -lr-record-fps N             clip frame rate
+    /// -lr-first-person             use the first person camera
     /// </code>
     /// </summary>
     public static class LaunchArgs
@@ -42,6 +47,11 @@ namespace LugeRush.Network
         public static string ScreenshotDir { get; private set; }
         /// <summary>Automation also walks the pause, rematch and exit flows and logs "[LR] AUTO FLOW" results.</summary>
         public static bool Flow { get; private set; }
+        public static string RecordDir { get; private set; }
+        public static int RecordFrom { get; private set; } = -1;
+        public static int RecordSeconds { get; private set; } = 20;
+        public static int RecordFps { get; private set; } = 60;
+        public static bool FirstPerson { get; private set; }
 
         public static bool IsAutomation => AutoHost || !string.IsNullOrEmpty(AutoJoin) || AutoSingle;
 
@@ -76,6 +86,11 @@ namespace LugeRush.Network
                     case "-lr-offline": Offline = true; break;
                     case "-lr-screenshots": ScreenshotDir = next; i++; break;
                     case "-lr-flow": Flow = true; break;
+                    case "-lr-record": RecordDir = next; i++; break;
+                    case "-lr-record-from": RecordFrom = ParseInt(next, RecordFrom); i++; break;
+                    case "-lr-record-secs": RecordSeconds = ParseInt(next, RecordSeconds); i++; break;
+                    case "-lr-record-fps": RecordFps = ParseInt(next, RecordFps); i++; break;
+                    case "-lr-first-person": FirstPerson = true; break;
                 }
             }
             if (IsAutomation) Autopilot = true;

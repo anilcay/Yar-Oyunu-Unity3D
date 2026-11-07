@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using LugeRush.CameraSystem;
 using LugeRush.Race;
 using LugeRush.UI;
+using LugeRush.Vehicle;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -81,6 +83,7 @@ namespace LugeRush.Network
             if (LaunchArgs.Bots >= 0) gs.Bots = LaunchArgs.Bots;
             if (LaunchArgs.Difficulty >= 0) gs.Difficulty = (BotDifficulty)LaunchArgs.Difficulty;
             if (!string.IsNullOrEmpty(LaunchArgs.TrackId)) gs.TrackId = LaunchArgs.TrackId;
+            if (LaunchArgs.Sled >= 0) gs.Sled = (SledType)LaunchArgs.Sled;
             Log($"single player: laps={gs.Laps} bots={gs.Bots} track={gs.TrackId}");
             MainMenuController.Instance.LaunchSinglePlayer();
             if (LaunchArgs.Flow) { yield return SingleFlow(); yield break; }
@@ -311,6 +314,7 @@ namespace LugeRush.Network
             raceSeen = true;
             raceSceneTime = Time.unscaledTime;
             Log($"race scene {SceneManager.GetActiveScene().name} loaded");
+            if (!string.IsNullOrEmpty(LaunchArgs.RecordDir)) { yield return RecordClip(rm); yield break; }
 
             bool hudShot = false;
             while (rm != null && rm.State != RaceState.Finished)
@@ -367,6 +371,31 @@ namespace LugeRush.Network
                       $"res={Screen.width}x{Screen.height} quality={QualitySettings.names[QualitySettings.GetQualityLevel()]} " +
                       $"gpu={SystemInfo.graphicsDeviceName} api={SystemInfo.graphicsDeviceType}");
             frameTimes.Clear();
+        }
+
+        /// <summary>Writes a fixed frame rate JPG sequence of the race, then quits. Frames include the HUD.</summary>
+        private IEnumerator RecordClip(RaceManager rm)
+        {
+            Directory.CreateDirectory(LaunchArgs.RecordDir);
+            Time.captureFramerate = LaunchArgs.RecordFps;
+            bool Before() => rm.State == RaceState.Waiting || LaunchArgs.RecordFrom >= 0 && (rm.State != RaceState.Racing || rm.RaceTime < LaunchArgs.RecordFrom);
+            while (rm != null && Before())
+            {
+                if (LaunchArgs.FirstPerson) FindFirstObjectByType<SledCameraDirector>()?.SetFirstPerson(true);
+                yield return null;
+            }
+            int frames = LaunchArgs.RecordSeconds * LaunchArgs.RecordFps;
+            Log($"recording {frames} frames at race time {(rm != null ? rm.RaceTime : 0f):0.0}");
+            for (int i = 0; i < frames && rm != null; i++)
+            {
+                yield return new WaitForEndOfFrame();
+                var tex = ScreenCapture.CaptureScreenshotAsTexture();
+                File.WriteAllBytes(Path.Combine(LaunchArgs.RecordDir, $"f{i:00000}.jpg"), tex.EncodeToJPG(95));
+                Destroy(tex);
+            }
+            Time.captureFramerate = 0;
+            Log($"recording done ({Screen.width}x{Screen.height})");
+            Quit(0);
         }
 
         private IEnumerator Capture(string file)
