@@ -2,9 +2,9 @@
 
 Low-poly, arcade hissiyatlı 3D **kızak (luge) yarışı**. Yerçekimiyle yokuş aşağı, drift ve rüzgar çekme ile hızlan; botlara karşı tek başına ya da oda kurup arkadaşlarınla yarış.
 
-[![Luge Rush oynanış önizlemesi](Docs/Media/luge-rush-preview.gif)](Docs/Media/luge-rush-trailer.mp4)
+[![Luge Rush oynanış önizlemesi](Docs/Media/luge-rush-preview.gif)](https://github.com/anilcay/Yar-Oyunu-Unity3D/raw/main/Docs/Media/luge-rush-trailer.mp4)
 
-**[19 saniyelik videoyu izle (1080p, 60 fps, MP4)](Docs/Media/luge-rush-trailer.mp4)**
+**[19 saniyelik videoyu indir (1080p, 60 fps, MP4)](https://github.com/anilcay/Yar-Oyunu-Unity3D/raw/main/Docs/Media/luge-rush-trailer.mp4)**
 
 <sub>Görüntüler oyunun Windows build'inden otomatik sürücüyle kaydedildi. Videoda oyunun yarış müziği çalar; oyun içi efekt sesleri yoktur.</sub>
 
